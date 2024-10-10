@@ -19,6 +19,16 @@ const authApi = apiSlice.injectEndpoints({
                     url: "/auth/signin",
                     method: "POST",
                     body: values,
+                    credentials: "include",
+                };
+            },
+        }),
+        getMe: builder.query({
+            query: () => {
+                return {
+                    url: "/user/profile",
+                    method: "GET",
+                    credentials: "include",
                 };
             },
         }),
@@ -38,7 +48,7 @@ const authSlice = createSlice({
     },
 });
 
-export const { useSigninMutation } = authApi;
+export const { useSigninMutation, useGetMeQuery } = authApi;
 
 export const { setRole, setUser } = authSlice.actions;
 
