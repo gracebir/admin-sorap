@@ -2,7 +2,7 @@
 "use client";
 import { SidebarItems } from "@/utils/constasts";
 import React from "react";
-import SidebarButton from "./SidebarButton";
+import SidebarButton from "./common/buttons/SidebarButton";
 
 const Sidebar = () => {
     return (

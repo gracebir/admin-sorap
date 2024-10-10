@@ -5,7 +5,7 @@ import { IconType } from "react-icons";
 
 const CircleIcon: FC<{ Icon: IconType }> = ({ Icon }) => {
     return (
-        <div className='p-4 rounded-full border'>
+        <div className='p-2 rounded-full border cursor-pointer'>
             <Icon size={14} />
         </div>
     );
