@@ -16,12 +16,14 @@ const SidebarButton: React.FC<{
     return (
         <Link
             href={pathname}
-            className={`w-full flex items-center gap-4 px-6 py-2 ${
-                currentPath.includes(name) && "border-r-[5px]"
+            className={`w-full flex items-center gap-4 px-6 py-4 ${
+                currentPath.includes(name) && "border-r-[5px] bg-secondary"
             } hover:bg-secondary border-active`}
         >
             <Icon size={23} />
-            <span className='text-base font-semibold'>{text}</span>
+            <span className='text-base font-semibold ease-in-out duration-300 hidden lg:block'>
+                {text}
+            </span>
         </Link>
     );
 };
