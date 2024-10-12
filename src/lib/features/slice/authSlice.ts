@@ -16,7 +16,7 @@ const authApi = apiSlice.injectEndpoints({
         >({
             query: (values) => {
                 return {
-                    url: "/auth/signin",
+                    url: "/auth/admin/signin",
                     method: "POST",
                     body: values,
                     credentials: "include",
