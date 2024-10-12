@@ -1,11 +1,15 @@
 /** @format */
+"use server";
 
-import Image from "next/image";
+import LoginForm from "@/components/login/LoginForm";
+import { getCcookie } from "@/lib";
 
-export default function Home() {
+/** @format */
+export default async function Home() {
+    const token = await getCcookie();
     return (
-        <main>
-            <h1>login</h1>
+        <main className='min-h-svh w-full flex items-center bg-gray-100 px-6 lg:px-0'>
+            <LoginForm isLogged={token!} />
         </main>
     );
 }
