@@ -12,14 +12,14 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { useLayoutEffect } from "react";
 
-export default function LoginForm({ funct }: { funct: string }) {
+export default function LoginForm({ isLogged }: { isLogged: boolean }) {
     const route = useRouter();
 
     useLayoutEffect(() => {
-        if (funct) {
+        if (isLogged) {
             route.replace("/admin/dashboard");
         }
-    }, [funct]);
+    }, [isLogged]);
 
     const [signin, { isLoading, error, isError }] = useSigninMutation();
     const { handleBlur, handleChange, handleSubmit, values, touched, errors } =
@@ -36,10 +36,8 @@ export default function LoginForm({ funct }: { funct: string }) {
                         password: value.password,
                     }).unwrap();
                     if (response.status === "success") {
-                        toast.success("Access granted");
-
-                        console.log("Function", funct);
-                        // redirect("/admin/dashboard");
+                        toast.success("Connected avec success 🚀");
+                        route.push("/admin/dashboard");
                     }
                 } catch (error) {
                     console.log(error);
