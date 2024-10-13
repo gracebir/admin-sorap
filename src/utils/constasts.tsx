@@ -74,3 +74,37 @@ export const products: Product[] = [
     },
     { name: "Marco Shoes", price: 79.49, quantity: 64, amount: 1965.81 },
 ];
+
+export const events = [
+    {
+        name: "Name Of the Events",
+        date: "12 Mar 2021",
+        time: "3pm - 9pm",
+        location: "Kigali, Rwanda",
+        price: 50,
+        imageUrl: "",
+    },
+    {
+        name: "Name Of the Events",
+        date: "12 Mar 2021",
+        time: "3pm - 9pm",
+        location: "Kigali, Rwanda",
+        price: 50,
+        imageUrl: "",
+    },
+];
+
+export const TabItems = [
+    {
+        title: "Upcoming",
+        id: "upcoming",
+    },
+    {
+        title: "Past",
+        id: "past",
+    },
+    {
+        title: "Rejected",
+        id: "rejected",
+    },
+];
