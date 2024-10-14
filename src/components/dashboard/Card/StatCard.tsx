@@ -10,7 +10,7 @@ const StatCard: React.FC<StatCardType> = ({ title, count, rate }) => {
         <div className='h-[112px] w-full rounded-md shadow-lg p-6 flex flex-col gap-6 border border-gray-200'>
             <h5 className='text-base font-semibold'>{title}</h5>
             <div className='flex justify-between'>
-                <h4 className='text-2xl md:text-3xl font-semibold'>
+                <h4 className='text-xl md:text-2xl font-semibold'>
                     {formatNumber(count)}
                 </h4>
                 <div

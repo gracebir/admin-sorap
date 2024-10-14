@@ -20,9 +20,9 @@ const EventTile: FC<EventTitleType> = ({
         </span>
     );
     return (
-        <div className='grid grid-cols-1 md:grid-cols-4'>
-            <div className='flex items-center gap-4 col-span-1 lg:col-span-2'>
-                <div className='max-w-[107px] h-[94px] bg-grayish w-full rounded-md'>
+        <div className='grid grid-cols-1  md:grid-cols-3 lg:grid-cols-4 gap-2'>
+            <div className='flex flex-col md:flex-row items-center gap-4 col-span-1 md:col-span-2 lg:col-span-2'>
+                <div className='md:max-w-[107px]  md:h-[94px] h-[150px] bg-grayish w-full rounded-md'>
                     <Image
                         src={imageUrl}
                         className='h-full w-full object-cover rounded-md'
@@ -31,15 +31,15 @@ const EventTile: FC<EventTitleType> = ({
                 </div>
                 <div className='flex flex-col gap-1'>
                     <h5 className='text-base font-bold md:text-lg'>{title}</h5>
-                    <div className='flex space-x-8'>
-                        <p>
+                    <div className='flex  space-x-8'>
+                        <p className='text-xs md:text-sm'>
                             <StrongTitle text='Date' />: {event_date}
                         </p>
-                        <p>
+                        <p className='text-xs md:text-sm'>
                             <StrongTitle text='Time' />: {time_range}
                         </p>
                     </div>
-                    <p>
+                    <p className='text-xs md:text-sm'>
                         <StrongTitle text='Price' />: ${price}
                     </p>
                 </div>

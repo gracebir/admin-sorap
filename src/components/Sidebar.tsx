@@ -6,7 +6,7 @@ import SidebarButton from "./common/buttons/SidebarButton";
 
 const Sidebar = () => {
     return (
-        <aside className='bg-primary text-white lg:w-full w-auto duration-300 max-w-[240px] h-full'>
+        <aside className='bg-primary text-white lg:w-full w-auto duration-300 max-w-[300px] h-full'>
             <div className='mt-24 flex flex-col items-center lg:items-stretch gap-2'>
                 {SidebarItems.map((item) => (
                     <SidebarButton

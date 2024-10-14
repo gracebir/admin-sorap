@@ -97,13 +97,13 @@ const DashboardChart: React.FC = () => {
     return (
         <div className='w-full bg-white rounded-lg shadow-md p-6 col-span-1 md:col-span-3'>
             <div className='flex items-center mb-6'>
-                <button className='text-lg font-semibold text-gray-800 mr-4 pb-2 border-b-2 border-gray-800'>
+                <button className='md:text-sm text-sm font-semibold text-gray-800 mr-4 pb-2 border-b-2 border-gray-800'>
                     Total Users
                 </button>
-                <button className='text-lg text-gray-500 mr-4 pb-2'>
+                <button className='md:text-sm text-sm text-gray-500 mr-4 pb-2'>
                     Total Projects
                 </button>
-                <button className='text-lg text-gray-500 pb-2'>
+                <button className='md:text-sm text-sm text-gray-500 pb-2'>
                     Operating Status
                 </button>
             </div>
