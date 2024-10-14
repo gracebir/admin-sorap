@@ -108,3 +108,9 @@ export const TabItems = [
         id: "rejected",
     },
 ];
+
+export const eventOptions = [
+    { value: "ATELIER", label: "Atelier" },
+    { value: "HACKATHON", label: "Hackathon" },
+    { value: "CONFERENCE", label: "Conference" },
+];
