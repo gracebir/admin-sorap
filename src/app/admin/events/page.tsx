@@ -6,9 +6,11 @@ import ThumbEvent from "@/assets/event.jpeg";
 import Image from "next/image";
 import { events, TabItems } from "@/utils/constasts";
 import EventTile from "@/components/event/EventTile";
+import Link from "next/link";
 
 function Events() {
     const [activeTab, setActiveTab] = useState("upcoming");
+
     return (
         <main className='flex flex-col gap-10 md:gap-12'>
             <div className='flex flex-col items-start gap-8 md:gap-10'>
@@ -22,7 +24,9 @@ function Events() {
                         className='w-full h-full object-cover rounded-md'
                     />
                 </div>
-                <Button text='Add event' />
+                <Link href={"/admin/events/create-event"}>
+                    <Button text='Add event' />
+                </Link>
             </div>
             <div className='flex flex-col gap-6 md:gap-8'>
                 <div className='flex space-x-8'>
@@ -42,9 +46,10 @@ function Events() {
                         </button>
                     ))}
                 </div>
-                <div className='flex flex-col gap-4'>
-                    {events.map((item) => (
+                <div className='flex flex-col gap-8'>
+                    {events.map((item, i) => (
                         <EventTile
+                            key={`${item.name}-${i}`}
                             time_range={item.time}
                             event_date={item.date}
                             imageUrl=''
