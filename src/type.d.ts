@@ -30,6 +30,17 @@ type InputType = {
     handleBlur: (e: React.FocusEvent<HTMLInputElement, Element>) => void;
 };
 
+type TextAreaType = {
+    label: string;
+    placeholder: string;
+    error: string;
+    touched: boolean;
+    name: string;
+    value: string | number;
+    handleChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+    handleBlur: (e: React.FocusEvent<HTMLTextAreaElement, Element>) => void;
+};
+
 type PasswordInputType = {
     label: string;
     placeholder: string;
