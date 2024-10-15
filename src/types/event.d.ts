@@ -17,3 +17,37 @@ export type ButtonType = {
     variant?: "primary" | "cancel";
     isLoading?: boolean;
 };
+
+export type TEvent = {
+    id: number;
+    theme: string;
+    description: string;
+    start_date: Date;
+    end_date: Date;
+    location: string;
+    price: number;
+    coordinates?: Record<string, any>; // Json type is handled with Record
+    images: string[];
+    thumbnail: string;
+    eventType: string;
+    createdAt: Date;
+    updatedAt: Date;
+    participants: Participant[]; // Assuming Participant is defined elsewhere
+    creator: User; // Assuming User type is defined elsewhere
+    creatorId: number;
+};
+
+export type EventStates = {
+    events: TEvent | null;
+};
+
+export type TCreateEventInput = {
+    theme: string;
+    description: string;
+    start_date: Date;
+    end_date: Date;
+    location: string;
+    price: number;
+    thumbnail: Blob;
+    eventType: string;
+};
