@@ -6,6 +6,10 @@ import { TbMessage2Question } from "react-icons/tb";
 import { RiFeedbackLine } from "react-icons/ri";
 import { LiaStoreAltSolid } from "react-icons/lia";
 import { Product } from "@/types/dashboard";
+import { FaChalkboardTeacher } from "react-icons/fa";
+import { IoCalendarSharp } from "react-icons/io5";
+import { BsCameraVideo } from "react-icons/bs";
+import { SiWebmoney } from "react-icons/si";
 
 export const SidebarItems = [
     {
@@ -17,8 +21,20 @@ export const SidebarItems = [
     {
         name: "event",
         path: "/admin/events",
-        text: "Events",
+        text: "Evenement",
         Icon: LuCalendar,
+    },
+    {
+        name: "sponsor",
+        path: "/admin/sponsor",
+        text: "Parteneur",
+        Icon: SiWebmoney,
+    },
+    {
+        name: "Programme",
+        path: "/admin/program",
+        text: "Programme",
+        Icon: IoCalendarSharp,
     },
     {
         name: "blogs",
@@ -44,6 +60,12 @@ export const SidebarItems = [
         path: "/admin/feedback",
         text: "Feedback",
         Icon: RiFeedbackLine,
+    },
+    {
+        name: "project",
+        path: "/admin/project",
+        text: "Project",
+        Icon: BsCameraVideo,
     },
 ];
 
