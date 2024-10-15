@@ -10,7 +10,8 @@ const SidebarButton: React.FC<{
     name: string;
     pathname: string;
     text: string;
-}> = ({ Icon, name, pathname, text }) => {
+    isOpen?: boolean;
+}> = ({ Icon, name, pathname, text, isOpen = false }) => {
     const currentPath = usePathname();
 
     return (
@@ -21,7 +22,11 @@ const SidebarButton: React.FC<{
             } hover:bg-secondary border-active`}
         >
             <Icon size={23} />
-            <span className='text-base font-semibold ease-in-out duration-300 hidden lg:block'>
+            <span
+                className={`text-base font-semibold ease-in-out duration-300 ${
+                    isOpen ? "hidden md:block" : "md:hidden hidden"
+                }`}
+            >
                 {text}
             </span>
         </Link>
