@@ -11,7 +11,15 @@ const initialState: EventStates = {
 
 const eventApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        getAllEvent: builder.query<null, Array<TEvent>>({
+        getAllEvent: builder.query<
+            {
+                statusCode: string;
+                status: string;
+                message: string;
+                data: Array<TEvent>;
+            },
+            null
+        >({
             query: () => {
                 return {
                     url: "/event/all",
