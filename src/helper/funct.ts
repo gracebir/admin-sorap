@@ -19,8 +19,8 @@ export const createEventFormData = (input: TCreateEventInput): FormData => {
     // Append each field from TCreateEventInput to the FormData
     formData.append("theme", input.theme);
     formData.append("description", input.description);
-    formData.append("start_date", input.start_date.toISOString()); // Convert Date to string
-    formData.append("end_date", input.end_date.toISOString()); // Convert Date to string
+    formData.append("start_date", input.start_date); // Convert Date to string
+    formData.append("end_date", input.end_date); // Convert Date to string
     formData.append("location", input.location);
     formData.append("price", input.price.toString()); // Convert number to string
     formData.append("thumbnail", input.thumbnail!); // Blob (File)
@@ -28,3 +28,27 @@ export const createEventFormData = (input: TCreateEventInput): FormData => {
 
     return formData;
 };
+
+export function formatDateTimeToFrench(dateString: string): string {
+    const date = new Date(dateString);
+
+    if (isNaN(date.getTime())) {
+        throw new Error("Invalid date");
+    }
+
+    const dateFormatter = new Intl.DateTimeFormat("fr-FR", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+    });
+
+    const timeFormatter = new Intl.DateTimeFormat("fr-FR", {
+        hour: "2-digit",
+        minute: "2-digit",
+    });
+
+    const formattedDate = dateFormatter.format(date);
+    const formattedTime = timeFormatter.format(date);
+
+    return `${formattedDate} - ${formattedTime}`;
+}

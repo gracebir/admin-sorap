@@ -22,8 +22,8 @@ export type TEvent = {
     id: number;
     theme: string;
     description: string;
-    start_date: Date;
-    end_date: Date;
+    start_date: string;
+    end_date: string;
     location: string;
     price: number;
     coordinates?: Record<string, any>; // Json type is handled with Record
@@ -44,8 +44,8 @@ export type EventStates = {
 export type TCreateEventInput = {
     theme: string;
     description: string;
-    start_date: Date;
-    end_date: Date;
+    start_date: string;
+    end_date: string;
     location: string;
     price: number;
     thumbnail: File | null;
