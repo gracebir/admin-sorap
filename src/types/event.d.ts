@@ -48,6 +48,6 @@ export type TCreateEventInput = {
     end_date: Date;
     location: string;
     price: number;
-    thumbnail: Blob;
+    thumbnail: File | null;
     eventType: string;
 };
