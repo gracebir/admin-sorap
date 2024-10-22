@@ -3,6 +3,7 @@
 import { EventStates, TCreateEventInput, TEvent } from "@/types/event";
 import { apiSlice } from "../../apiSlice";
 import { createSlice } from "@reduxjs/toolkit";
+import { createEventFormData } from "@/helper/funct";
 
 const initialState: EventStates = {
     events: null,
@@ -20,15 +21,25 @@ const eventApi = apiSlice.injectEndpoints({
             providesTags: ["event"],
             keepUnusedDataFor: 300,
         }),
-        createEvent: builder.mutation<TEvent, TCreateEventInput>({
+        createEvent: builder.mutation<
+            {
+                statusCode: number;
+                status: string;
+                message: string;
+                data: TEvent;
+            },
+            TCreateEventInput
+        >({
             query: (value) => {
+                const formData = createEventFormData(value);
                 return {
                     url: "/event/create",
                     method: "POST",
-                    body: value,
+                    body: formData,
                     credentials: "include",
                 };
             },
+            invalidatesTags: ["event"],
         }),
         addPhotos: builder.mutation<TEvent, { id: number; photo: Array<Blob> }>(
             {
@@ -52,6 +63,13 @@ const eventApi = apiSlice.injectEndpoints({
                     credentials: "include",
                     body: event,
                     method: "PUT",
+                };
+            },
+        }),
+        addModerator: builder.mutation({
+            query: () => {
+                return {
+                    url: "",
                 };
             },
         }),
