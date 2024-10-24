@@ -1,16 +1,11 @@
 /** @format */
 "use client";
 import React, { useState } from "react";
-import { Eye, Trash2, Download, ChevronLeft, ChevronRight } from "lucide-react";
+import { Eye, Pen, ChevronLeft, ChevronRight } from "lucide-react";
 import { useGetAllEventQuery } from "@/lib/features/slice/event/eventSlice";
 import { formatDateTimeToFrench } from "@/helper/funct";
-
-interface Package {
-    name: string;
-    price: number;
-    invoiceDate: string;
-    status: "Paid" | "Unpaid" | "Pending";
-}
+import { MdOutlineAddAPhoto } from "react-icons/md";
+import Link from "next/link";
 
 const ITEMS_PER_PAGE = 4;
 
@@ -69,15 +64,35 @@ export default function TableData() {
                                 {formatDateTimeToFrench(event.start_date)}
                             </td>
                             <td className='px-6 py-4 whitespace-nowrap text-sm font-medium'>
-                                <button className='text-gray-400 hover:text-gray-500 mr-2'>
-                                    <Eye size={18} />
-                                </button>
-                                <button className='text-gray-400 hover:text-gray-500 mr-2'>
-                                    <Trash2 size={18} />
-                                </button>
-                                <button className='text-gray-400 hover:text-gray-500'>
-                                    <Download size={18} />
-                                </button>
+                                <Link
+                                    href={`/admin/events/${event.id}`}
+                                    className='tooltip'
+                                    data-tip='Voir detail'
+                                >
+                                    <button className='text-gray-400 hover:text-gray-500 mr-2'>
+                                        <Eye size={18} />
+                                    </button>
+                                </Link>
+                                <Link
+                                    href={`/admin/events/edit/${event.id}`}
+                                    className='tooltip'
+                                    data-tip='Modifier'
+                                >
+                                    <button className='text-gray-400 hover:text-gray-500 mr-2'>
+                                        <Pen size={18} />
+                                    </button>
+                                </Link>
+                                {event.isPublished && (
+                                    <Link
+                                        href={`/admin/events/edit/images/${event.id}`}
+                                        className='tooltip'
+                                        data-tip='Ajouter Images'
+                                    >
+                                        <button className='text-gray-400 hover:text-gray-500 mr-2'>
+                                            <MdOutlineAddAPhoto size={18} />
+                                        </button>
+                                    </Link>
+                                )}
                             </td>
                         </tr>
                     ))}
