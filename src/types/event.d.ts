@@ -30,6 +30,7 @@ export type TEvent = {
     images: string[];
     thumbnail: string;
     eventType: string;
+    isPublished: boolean;
     createdAt: Date;
     updatedAt: Date;
     participants: Participant[]; // Assuming Participant is defined elsewhere
