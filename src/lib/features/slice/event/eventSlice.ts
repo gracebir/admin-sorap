@@ -29,6 +29,23 @@ const eventApi = apiSlice.injectEndpoints({
             providesTags: ["event"],
             keepUnusedDataFor: 300,
         }),
+        getEventById: builder.query<
+            {
+                statusCode: string;
+                status: string;
+                message: string;
+                data: TEvent;
+            },
+            { id: number }
+        >({
+            query: ({ id }) => {
+                return {
+                    url: `/event/detail/${id}`,
+                    method: "GET",
+                    credentials: "include",
+                };
+            },
+        }),
         createEvent: builder.mutation<
             {
                 statusCode: number;
@@ -94,6 +111,7 @@ export const {
     useGetAllEventQuery,
     useCreateEventMutation,
     useAddPhotosMutation,
+    useGetEventByIdQuery,
 } = eventApi;
 
 export default eventSlice;
