@@ -225,7 +225,6 @@ const ModeratorData: React.FC<{
                 onRequestClose={() => setIsModalDetailOpen(false)}
             />
             <EditModeratorModal
-                avatar={profile?.avatar!}
                 bio={profile?.bio!}
                 email={profile?.email!}
                 firstname={profile?.firstname!}

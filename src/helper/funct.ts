@@ -1,6 +1,6 @@
 /** @format */
 
-import { TCreateEventInput } from "@/types/event";
+import { TCreateEventInput, TModerator } from "@/types/event";
 
 export function formatNumber(num: number) {
     if (num >= 1000) {
@@ -25,6 +25,21 @@ export const createEventFormData = (input: TCreateEventInput): FormData => {
     formData.append("price", input.price.toString()); // Convert number to string
     formData.append("thumbnail", input.thumbnail!); // Blob (File)
     formData.append("eventType", input.eventType);
+
+    return formData;
+};
+
+export const createModeratorFormData = (input: TModerator): FormData => {
+    const formData = new FormData();
+
+    // Append each field from TCreateEventInput to the FormData
+    formData.append("firstname", input.firstname);
+    formData.append("lastname", input.lastname);
+    formData.append("bio", input.bio); // Convert Date to string
+    formData.append("eventId", input.eventId?.toString()!); // Convert Date to string
+    formData.append("avatar", input.avatar!);
+    formData.append("phone", input.phone); // Convert number to string
+    formData.append("email", input.email); // Blob (File)
 
     return formData;
 };

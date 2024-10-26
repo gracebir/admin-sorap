@@ -1,9 +1,14 @@
 /** @format */
 
-import { EventStates, TCreateEventInput, TEvent } from "@/types/event";
+import {
+    EventStates,
+    TCreateEventInput,
+    TEvent,
+    TModerator,
+} from "@/types/event";
 import { apiSlice } from "../../apiSlice";
 import { createSlice } from "@reduxjs/toolkit";
-import { createEventFormData } from "@/helper/funct";
+import { createEventFormData, createModeratorFormData } from "@/helper/funct";
 
 const initialState: EventStates = {
     events: null,
@@ -45,6 +50,7 @@ const eventApi = apiSlice.injectEndpoints({
                     credentials: "include",
                 };
             },
+            providesTags: ["event"],
         }),
         createEvent: builder.mutation<
             {
@@ -66,7 +72,7 @@ const eventApi = apiSlice.injectEndpoints({
             },
             invalidatesTags: ["event"],
         }),
-        addPhotos: builder.mutation<TEvent, { id: number; photo: Array<Blob> }>(
+        addPhotos: builder.mutation<TEvent, { id: number; photo: Array<File> }>(
             {
                 query: (value) => {
                     return {
@@ -79,7 +85,12 @@ const eventApi = apiSlice.injectEndpoints({
             }
         ),
         updateEvent: builder.mutation<
-            TEvent,
+            {
+                statusCode: number;
+                status: string;
+                message: string;
+                data: TEvent;
+            },
             { id: number; event: Partial<TCreateEventInput> }
         >({
             query: ({ id, event }) => {
@@ -90,13 +101,80 @@ const eventApi = apiSlice.injectEndpoints({
                     method: "PUT",
                 };
             },
+            invalidatesTags: ["event"],
         }),
-        addModerator: builder.mutation({
-            query: () => {
+        updateEventThumbnail: builder.mutation<
+            TEvent,
+            { id: number; event: Partial<TCreateEventInput> }
+        >({
+            query: ({ id, event }) => {
+                const formData = new FormData();
+                formData.append("thumbnail", event.thumbnail!);
                 return {
-                    url: "",
+                    url: `/event/update/thumbnail/${id}`,
+                    credentials: "include",
+                    body: formData,
+                    method: "PUT",
                 };
             },
+            invalidatesTags: ["event"],
+        }),
+        addModerator: builder.mutation<
+            {
+                statusCode: number;
+                status: string;
+                message: string;
+                data: TModerator;
+            },
+            TModerator
+        >({
+            query: (value) => {
+                const formData = createModeratorFormData(value);
+                return {
+                    url: "/event/add/moderator",
+                    method: "POST",
+                    body: formData,
+                    credentials: "include",
+                };
+            },
+            invalidatesTags: ["event"],
+        }),
+        updateModerator: builder.mutation<
+            {
+                statusCode: number;
+                status: string;
+                message: string;
+                data: TModerator;
+            },
+            { id: number; moderator: Partial<TModerator> }
+        >({
+            query: ({ id, moderator }) => {
+                return {
+                    url: `/event/update/moderator/${id}`,
+                    method: "PUT",
+                    body: moderator,
+                    credentials: "include",
+                };
+            },
+            invalidatesTags: ["event"],
+        }),
+        launchEvent: builder.mutation<
+            {
+                statusCode: number;
+                status: string;
+                message: string;
+                data: TEvent;
+            },
+            { id: number }
+        >({
+            query: ({ id }) => {
+                return {
+                    url: `/event/launch/${id}`,
+                    method: "PUT",
+                    credentials: "include",
+                };
+            },
+            invalidatesTags: ["event"],
         }),
     }),
 });
@@ -112,6 +190,11 @@ export const {
     useCreateEventMutation,
     useAddPhotosMutation,
     useGetEventByIdQuery,
+    useAddModeratorMutation,
+    useUpdateEventMutation,
+    useUpdateEventThumbnailMutation,
+    useLaunchEventMutation,
+    useUpdateModeratorMutation,
 } = eventApi;
 
 export default eventSlice;

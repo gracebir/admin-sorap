@@ -23,26 +23,19 @@ export default function ModeratorProfile({
     onRequestClose,
     user,
 }: UserProfileModalProps) {
-    const customStyles = {
-        content: {
-            top: "50%",
-            left: "50%",
-            right: "auto",
-            bottom: "auto",
-            marginRight: "-50%",
-            transform: "translate(-50%, -50%)",
-        },
-    };
     return (
         <Modal
             isOpen={isOpen}
             onRequestClose={onRequestClose}
+            ariaHideApp={false}
             className='fixed inset-0 flex items-center justify-center p-4'
             overlayClassName='fixed inset-0 bg-black bg-opacity-50'
         >
             <div className='bg-white rounded-lg shadow-xl w-full max-w-md'>
                 <div className='flex justify-between items-center p-4 border-b'>
-                    <h2 className='text-xl font-semibold'>User Profile</h2>
+                    <h2 className='text-xl font-semibold'>
+                        Profile du Moderateur
+                    </h2>
                     <button onClick={onRequestClose}>
                         <IoMdClose size={20} />
                     </button>

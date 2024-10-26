@@ -10,6 +10,9 @@ import { useFormik } from "formik";
 import React, { useEffect } from "react";
 import Modal from "react-modal";
 import { IoMdClose } from "react-icons/io";
+import { useUpdateModeratorMutation } from "@/lib/features/slice/event/eventSlice";
+import { toast } from "react-toastify";
+import ErrorMessage from "@/components/common/ErrorMessage";
 
 const EditModeratorModal: React.FC<TModeratorProps> = ({
     id,
@@ -31,6 +34,8 @@ const EditModeratorModal: React.FC<TModeratorProps> = ({
             transform: "translate(-50%, -50%)",
         },
     };
+    const [updateModerator, { isLoading, isError, error }] =
+        useUpdateModeratorMutation();
 
     const {
         values,
@@ -48,12 +53,15 @@ const EditModeratorModal: React.FC<TModeratorProps> = ({
             phone: "",
             email: "",
         },
-        onSubmit: async (values, { resetForm }) => {
-            const newModerator = {
-                ...values,
-            };
+        onSubmit: async (value) => {
             try {
-                console.log(newModerator);
+                const response = await updateModerator({
+                    id: parseInt(id),
+                    moderator: value,
+                }).unwrap();
+                if (response) {
+                    toast.success("Information modifier ");
+                }
             } catch (error) {
                 console.log(error);
             }
@@ -161,12 +169,16 @@ const EditModeratorModal: React.FC<TModeratorProps> = ({
                     </div>
 
                     <div className='flex justify-end mt-2'>
-                        <Button type='submit' text='Modifier' />
+                        <Button
+                            isLoading={isLoading}
+                            type='submit'
+                            text='Modifier'
+                        />
                     </div>
-                    {/* {isError && (
+                    {isError && (
                         //@ts-ignore
                         <ErrorMessage text={error?.data?.error_message} />
-                    )} */}
+                    )}
                 </form>
             </div>
         </Modal>
