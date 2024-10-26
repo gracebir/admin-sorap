@@ -3,17 +3,39 @@
 "use client";
 
 import { formatDateTimeToFrench } from "@/helper/funct";
-import { useGetEventByIdQuery } from "@/lib/features/slice/event/eventSlice";
+import {
+    useGetEventByIdQuery,
+    useLaunchEventMutation,
+} from "@/lib/features/slice/event/eventSlice";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { IoCalendarNumberOutline } from "react-icons/io5";
 import { IoLocationSharp } from "react-icons/io5";
 import { IoIosArrowRoundBack } from "react-icons/io";
+import ModeratorModal from "../add-moderator/ModeratorModal";
+import ModeratorData from "../table-data/ModeratorData";
+import { toast } from "react-toastify";
 
 const DetailEvent: React.FC<{ id: number }> = ({ id }) => {
     const { data, isLoading } = useGetEventByIdQuery({ id });
-    console.log(data);
+    const [modalIsOpen, setIsOpen] = React.useState(false);
+    const [launchEvent, { isLoading: loadingEventLaunch }] =
+        useLaunchEventMutation();
+
+    const openModal = () => {
+        setIsOpen(true);
+    };
+    const handleLaunchEvent = async () => {
+        try {
+            const response = await launchEvent({ id: data?.data.id! }).unwrap();
+            if (response) {
+                toast.success("Evenement vient etre lancer");
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
     if (isLoading)
         return (
             <div className='min-h-[70svh] flex justify-center items-center'>
@@ -96,18 +118,42 @@ const DetailEvent: React.FC<{ id: number }> = ({ id }) => {
                             </div>
                         </div>
                         {!data?.data.isPublished && (
-                            <button className='px-6 py-3 bg-blue-400 w-full text-sm text-gray-50 rounded-md font-medium hover:bg-blue-900'>
-                                Lancer l'événement 🚀
+                            <button
+                                type='button'
+                                onClick={handleLaunchEvent}
+                                className='px-6 py-3 bg-blue-400 w-full text-sm text-gray-50 rounded-md font-medium hover:bg-blue-900'
+                            >
+                                {loadingEventLaunch ? (
+                                    <span className='loading loading-spinner loading-sm'></span>
+                                ) : (
+                                    "Lancer l'événement 🚀"
+                                )}
                             </button>
                         )}
                     </div>
                     <div className='p-2'>
-                        <button className='px-6 py-3 bg-primary w-full text-sm text-gray-50 rounded-md font-medium hover:bg-blue-900'>
+                        <button
+                            onClick={openModal}
+                            className='px-6 py-3 bg-primary w-full text-sm text-gray-50 rounded-md font-medium hover:bg-blue-900'
+                        >
                             Ajouter Moderateur
                         </button>
                     </div>
                 </div>
             </div>
+            {data?.data?.moderators?.length! !== 0 && (
+                <div className='flex flex-col gap-4'>
+                    <h3 className='font-semibold text-primary'>
+                        Les Moderateurs de l'evenement 🎤{" "}
+                    </h3>
+                    <ModeratorData moderators={data?.data?.moderators!} />
+                </div>
+            )}
+            <ModeratorModal
+                eventId={data?.data.id!}
+                modalIsOpen={modalIsOpen}
+                setIsOpen={setIsOpen}
+            />
         </div>
     );
 };

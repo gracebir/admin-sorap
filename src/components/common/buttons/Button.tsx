@@ -12,6 +12,7 @@ const Button: FC<ButtonType> = ({
 }) => {
     return (
         <button
+            disabled={isLoading}
             className={`${
                 variant === "primary"
                     ? "bg-primary hover:bg-lightBlue text-white"

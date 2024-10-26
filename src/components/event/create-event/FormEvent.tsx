@@ -55,8 +55,8 @@ const FormEvent = () => {
                 try {
                     const response = await createEvent({
                         ...value,
-                        start_date: new Date(value.start_date),
-                        end_date: new Date(value.end_date),
+                        start_date: value.start_date,
+                        end_date: value.end_date,
                         thumbnail: selectedFile!,
                     }).unwrap();
                     if (response.status === "success") {
