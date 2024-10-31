@@ -43,6 +43,8 @@ const programApi = apiSlice.injectEndpoints({
                     method: "GET",
                 };
             },
+            providesTags: ["program"],
+            keepUnusedDataFor: 5000,
         }),
         createProgram: builder.mutation<
             {
@@ -65,12 +67,17 @@ const programApi = apiSlice.injectEndpoints({
             invalidatesTags: ["program"],
         }),
         updateProgram: builder.mutation<
-            null,
+            {
+                statusCode: number;
+                status: string;
+                message: string;
+                data: TprogramType;
+            },
             { id: number; program: Partial<TcreateProgramEntry> }
         >({
             query: ({ id, program }) => {
                 return {
-                    url: `/program/${id}`,
+                    url: `/program/update/${id}`,
                     method: "PUT",
                     body: program,
                     credentials: "include",
