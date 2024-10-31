@@ -35,7 +35,7 @@ export default function LoginForm({ isLogged }: { isLogged: boolean }) {
                         email: value.email,
                         password: value.password,
                     }).unwrap();
-                    if (response.status === "success") {
+                    if (response) {
                         toast.success("Connected avec success 🚀");
                         route.push("/admin/dashboard");
                     }
