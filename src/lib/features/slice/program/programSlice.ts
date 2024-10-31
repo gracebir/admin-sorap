@@ -8,6 +8,7 @@ import {
 } from "@/types/program";
 import { apiSlice } from "../../apiSlice";
 import { createSlice } from "@reduxjs/toolkit";
+import { createProgramFormData } from "@/helper/funct";
 
 const initialState: TprogramState = {
     programs: null,
@@ -26,13 +27,39 @@ const programApi = apiSlice.injectEndpoints({
             providesTags: ["program"],
             keepUnusedDataFor: 5000,
         }),
-        createProgram: builder.mutation<null, TcreateProgramEntry>({
+        getProgramById: builder.query<
+            {
+                statusCode: number;
+                status: string;
+                message: string;
+                data: TprogramType;
+            },
+            { id: number }
+        >({
+            query: ({ id }) => {
+                return {
+                    url: `/program/${id}`,
+                    credentials: "include",
+                    method: "GET",
+                };
+            },
+        }),
+        createProgram: builder.mutation<
+            {
+                statusCode: number;
+                status: string;
+                message: string;
+                data: TprogramType;
+            },
+            TcreateProgramEntry
+        >({
             query: (value) => {
+                const formData = createProgramFormData(value);
                 return {
                     url: "/program/create",
                     method: "POST",
                     credentials: "include",
-                    body: value,
+                    body: formData,
                 };
             },
             invalidatesTags: ["program"],
@@ -47,6 +74,27 @@ const programApi = apiSlice.injectEndpoints({
                     method: "PUT",
                     body: program,
                     credentials: "include",
+                };
+            },
+            invalidatesTags: ["program"],
+        }),
+        updateProgramThumbnail: builder.mutation<
+            {
+                statusCode: number;
+                status: string;
+                message: string;
+                data: TprogramType;
+            },
+            { id: number; thumbnail: File | null }
+        >({
+            query: ({ id, thumbnail }) => {
+                const formData = new FormData();
+                formData.append("thumbnail", thumbnail!);
+                return {
+                    url: `/program/update/thumbnail/${id}`,
+                    credentials: "include",
+                    body: formData,
+                    method: "PUT",
                 };
             },
             invalidatesTags: ["program"],
@@ -72,3 +120,13 @@ const programSlice = createSlice({
     initialState,
     reducers: {},
 });
+
+export const {
+    useGetAllProgramsQuery,
+    useCreateProgramMutation,
+    useUpdateProgramMutation,
+    useGetProgramByIdQuery,
+    useUpdateProgramThumbnailMutation,
+} = programApi;
+
+export default programSlice;

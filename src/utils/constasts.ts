@@ -31,7 +31,7 @@ export const SidebarItems = [
         Icon: SiWebmoney,
     },
     {
-        name: "Programme",
+        name: "program",
         path: "/admin/program",
         text: "Programme",
         Icon: IoCalendarSharp,

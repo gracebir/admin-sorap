@@ -4,21 +4,22 @@ export type TcreateProgramEntry = {
     title: string;
     description: string;
     edition: string;
-    thumbnail: string;
+    thumbnail: File | null;
     price?: number;
-    date_from: Date;
-    date_to: Date;
+    date_from: string;
+    date_to: string;
 };
 
 export type TprogramType = {
+    id?: number;
     title: string;
     description: string;
     edition: string; // Unique constraint
     images?: string[]; // Optional, defaults to an empty array
     thumbnail: string;
     price?: number; // Optional, defaults to 0
-    date_from: Date;
-    date_to: Date;
+    date_from: string;
+    date_to: string;
 };
 
 export type TprogramState = {

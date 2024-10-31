@@ -1,6 +1,7 @@
 /** @format */
 
 import { TCreateEventInput, TModerator } from "@/types/event";
+import { TcreateProgramEntry } from "@/types/program";
 
 export function formatNumber(num: number) {
     if (num >= 1000) {
@@ -26,6 +27,20 @@ export const createEventFormData = (input: TCreateEventInput): FormData => {
     formData.append("thumbnail", input.thumbnail!); // Blob (File)
     formData.append("eventType", input.eventType);
 
+    return formData;
+};
+
+export const createProgramFormData = (input: TcreateProgramEntry): FormData => {
+    const formData = new FormData();
+
+    // Append each field from TCreateEventInput to the FormData
+    formData.append("title", input.title);
+    formData.append("description", input.description);
+    formData.append("date_from", input.date_from); // Convert Date to string
+    formData.append("date_to", input.date_to); // Convert Date to string
+    formData.append("edition", input.edition);
+    formData.append("price", input.price!.toString()); // Convert number to string
+    formData.append("thumbnail", input.thumbnail!); // Blob (File)
     return formData;
 };
 
