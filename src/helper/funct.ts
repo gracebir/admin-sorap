@@ -1,6 +1,7 @@
 /** @format */
 
 import { TCreateEventInput, TModerator } from "@/types/event";
+import { TcreateInstructorType } from "@/types/instructor";
 import { TcreateProgramEntry } from "@/types/program";
 
 export function formatNumber(num: number) {
@@ -41,6 +42,19 @@ export const createProgramFormData = (input: TcreateProgramEntry): FormData => {
     formData.append("edition", input.edition);
     formData.append("price", input.price!.toString()); // Convert number to string
     formData.append("thumbnail", input.thumbnail!); // Blob (File)
+    return formData;
+};
+
+export const createInstructorFormData = (
+    input: TcreateInstructorType
+): FormData => {
+    const formData = new FormData();
+    formData.append("firstname", input.firstname);
+    formData.append("lastname", input.lastname);
+    formData.append("bio", input.bio);
+    formData.append("avatar", input.avatar!);
+    formData.append("phone", input.phone);
+    formData.append("email", input.email);
     return formData;
 };
 

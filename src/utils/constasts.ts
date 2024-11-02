@@ -6,7 +6,7 @@ import { TbMessage2Question } from "react-icons/tb";
 import { RiFeedbackLine } from "react-icons/ri";
 import { LiaStoreAltSolid } from "react-icons/lia";
 import { Product } from "@/types/dashboard";
-import { FaChalkboardTeacher } from "react-icons/fa";
+import { LiaUserTieSolid } from "react-icons/lia";
 import { IoCalendarSharp } from "react-icons/io5";
 import { BsCameraVideo } from "react-icons/bs";
 import { SiWebmoney } from "react-icons/si";
@@ -29,6 +29,12 @@ export const SidebarItems = [
         path: "/admin/sponsor",
         text: "Parteneur",
         Icon: SiWebmoney,
+    },
+    {
+        name: "instructor",
+        path: "/admin/instructor",
+        text: "Titeur",
+        Icon: LiaUserTieSolid,
     },
     {
         name: "program",

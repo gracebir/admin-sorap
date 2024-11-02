@@ -12,7 +12,7 @@ export const apiSlice = createApi({
         "event",
         "program",
         "user",
-        "tutor",
+        "instructor",
         "moderator",
         "participant",
     ],
