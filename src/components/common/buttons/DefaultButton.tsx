@@ -17,7 +17,7 @@ const DefaultButton: FC<ButtonType> = ({
                 variant === "primary"
                     ? "bg-primary hover:bg-lightBlue text-white"
                     : "bg-grayish hover:bg-slate-100 text-primary"
-            } py-3 px-6 lg:px-8 rounded-lg font-semibold duration-300`}
+            } py-2 px-4 lg:px-6 rounded-lg font-semibold duration-300`}
             onClick={onClick}
             type={type}
         >

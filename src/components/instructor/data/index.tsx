@@ -1,33 +1,36 @@
 /** @format */
-"use client";
+
+import { TinstructorType } from "@/types/instructor";
 import React, { useState } from "react";
-import TableHeader from "./TableHeader";
-import { TprogramType } from "@/types/program";
-import TableColumn from "./TableColumn";
+import InstructortableHeader from "./InstructortableHeader";
+import Column from "./Column";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const ITEMS_PER_PAGE = 8;
 
-function DataProgram({ programs }: { programs: Array<TprogramType> }) {
+export default function InstructorTableData({
+    instructors,
+}: {
+    instructors: Array<TinstructorType>;
+}) {
     const [currentPage, setCurrentPage] = useState(1);
-    const totalPages = Math.ceil((programs.length || 0) / ITEMS_PER_PAGE);
+    const totalPages = Math.ceil((instructors.length || 0) / ITEMS_PER_PAGE);
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
     const endIndex = startIndex + ITEMS_PER_PAGE;
-    const currentPackages = programs?.slice(startIndex, endIndex);
-
+    const currentInstructors = instructors?.slice(startIndex, endIndex);
     return (
         <div className='bg-white shadow-md rounded-sm overflow-hidden'>
             <table className='min-w-full divide-y divide-gray-200'>
-                <TableHeader />
+                <InstructortableHeader />
                 <tbody className='bg-white divide-y divide-gray-200'>
-                    {currentPackages?.map((item) => (
-                        <TableColumn
+                    {currentInstructors?.map((item) => (
+                        <Column
                             key={item.id}
-                            date={item.date_from}
-                            title={item.title}
-                            isPublished={false}
                             id={item.id!}
-                            price={item.price!}
+                            firstname={item.firstname}
+                            lastname={item.lastname}
+                            email={item.email!}
+                            avatar={item.avatar}
                         />
                     ))}
                 </tbody>
@@ -64,11 +67,11 @@ function DataProgram({ programs }: { programs: Array<TprogramType> }) {
                             </span>{" "}
                             to{" "}
                             <span className='font-medium'>
-                                {Math.min(endIndex, programs?.length!)}
+                                {Math.min(endIndex, instructors?.length!)}
                             </span>{" "}
                             of{" "}
                             <span className='font-medium'>
-                                {programs.length}
+                                {instructors.length}
                             </span>{" "}
                             results
                         </p>
@@ -128,5 +131,3 @@ function DataProgram({ programs }: { programs: Array<TprogramType> }) {
         </div>
     );
 }
-
-export default DataProgram;
