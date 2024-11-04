@@ -7,6 +7,7 @@ import {
 } from "@/types/partner";
 import { apiSlice } from "../../apiSlice";
 import { createSlice } from "@reduxjs/toolkit";
+import { createPartnerFormData } from "@/helper/funct";
 
 const initialState: TInitialStatePatner = {
     partners: null,
@@ -24,10 +25,11 @@ const partnerApi = apiSlice.injectEndpoints({
             TcreatePartnerType
         >({
             query: (value) => {
+                const formData = createPartnerFormData(value);
                 return {
                     url: "/partner/create",
                     method: "POST",
-                    body: value,
+                    body: formData,
                     credentials: "include",
                 };
             },

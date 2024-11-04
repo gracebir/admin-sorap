@@ -2,6 +2,7 @@
 
 import { TCreateEventInput, TModerator } from "@/types/event";
 import { TcreateInstructorType } from "@/types/instructor";
+import { TcreatePartnerType } from "@/types/partner";
 import { TcreateProgramEntry } from "@/types/program";
 
 export function formatNumber(num: number) {
@@ -52,6 +53,18 @@ export const createInstructorFormData = (
     formData.append("firstname", input.firstname);
     formData.append("lastname", input.lastname);
     formData.append("bio", input.bio);
+    formData.append("avatar", input.avatar!);
+    formData.append("phone", input.phone);
+    formData.append("email", input.email);
+    return formData;
+};
+
+export const createPartnerFormData = (input: TcreatePartnerType): FormData => {
+    const formData = new FormData();
+    formData.append("firstname", input.firstname!);
+    formData.append("lastname", input.lastname!);
+    formData.append("bio", input.bio);
+    formData.append("company", input.company);
     formData.append("avatar", input.avatar!);
     formData.append("phone", input.phone);
     formData.append("email", input.email);
