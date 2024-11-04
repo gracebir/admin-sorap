@@ -25,8 +25,8 @@ export const SidebarItems = [
         Icon: LuCalendar,
     },
     {
-        name: "sponsor",
-        path: "/admin/sponsor",
+        name: "partner",
+        path: "/admin/partner",
         text: "Parteneur",
         Icon: SiWebmoney,
     },
