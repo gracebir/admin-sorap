@@ -7,7 +7,6 @@ export type TPartner = {
     avatar: string;
     phone: string;
     email: string;
-    bio: string;
     company: string;
 };
 
@@ -17,7 +16,6 @@ export type TcreatePartnerType = {
     avatar: File | null;
     phone: string;
     email: string;
-    bio: string;
     company: string;
 };
 
