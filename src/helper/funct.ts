@@ -63,7 +63,6 @@ export const createPartnerFormData = (input: TcreatePartnerType): FormData => {
     const formData = new FormData();
     formData.append("firstname", input.firstname!);
     formData.append("lastname", input.lastname!);
-    formData.append("bio", input.bio);
     formData.append("company", input.company);
     formData.append("avatar", input.avatar!);
     formData.append("phone", input.phone);
