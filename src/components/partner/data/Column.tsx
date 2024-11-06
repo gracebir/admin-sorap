@@ -15,7 +15,7 @@ const PartnerColumn: React.FC<{
     return (
         <tr>
             <td className='px-6 py-4 flex gap-2 items-center'>
-                <div className='h-10 w-10 rounded-full'>
+                <div className='h-10  rounded-full'>
                     <img
                         className='rounded-full w-full h-full'
                         src={avatar}
