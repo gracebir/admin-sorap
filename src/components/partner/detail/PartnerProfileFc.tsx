@@ -2,8 +2,11 @@
 "use client";
 import DefaultButton from "@/components/common/buttons/DefaultButton";
 import PageTitle from "@/components/common/PageTitle";
-import { useUpdateInstructorAvatarMutation } from "@/lib/features/slice/instructor/instructorSlice";
-import { useGetPartnerByIdQuery } from "@/lib/features/slice/partner/parterSlice";
+
+import {
+    useGetPartnerByIdQuery,
+    useUpdatePartnerAvatarMutation,
+} from "@/lib/features/slice/partner/parterSlice";
 import { Camera, Edit } from "lucide-react";
 import Link from "next/link";
 import React, { FC, useState } from "react";
@@ -17,7 +20,7 @@ const PartnerProfileFc: FC<{ id: number }> = ({ id }) => {
     const [thumbnail, setThumbnail] = useState<string | null>(null);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [updateAvatar, { isLoading: loadingAvatar }] =
-        useUpdateInstructorAvatarMutation();
+        useUpdatePartnerAvatarMutation();
 
     const MAX_SIZE = 2 * 1024 * 1024; // 2MB
 
