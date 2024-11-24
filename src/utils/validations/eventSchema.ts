@@ -36,3 +36,8 @@ export const moderatorSchema = yup.object({
         .required("L'adresse email est requise")
         .email("L'adresse email doit être valide"),
 });
+
+export const EventSponsorSchema = yup.object().shape({
+    amount: yup.number().optional(),
+    note: yup.string().optional(),
+});

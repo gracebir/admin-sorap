@@ -10,6 +10,7 @@ import { IoIosArrowRoundBack } from "react-icons/io";
 import { toast } from "react-toastify";
 import {
     useGetProgramByIdQuery,
+    useLaunchProgramMutation,
     useUpdateProgramThumbnailMutation,
 } from "@/lib/features/slice/program/programSlice";
 import { Pen } from "lucide-react";
@@ -22,6 +23,20 @@ const DetailProgram: React.FC<{ id: number }> = ({ id }) => {
 
     const [updateThumbnail, { isLoading: updateThumbnailLoading }] =
         useUpdateProgramThumbnailMutation();
+
+    const [launchProgram, { isLoading: loadingLaunch }] =
+        useLaunchProgramMutation();
+
+    const handleLaunchProgram = async () => {
+        try {
+            const response = await launchProgram({ id: id }).unwrap();
+            if (response) {
+                toast.success("Etat du programme change");
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     const MAX_SIZE = 2 * 1024 * 1024; // 2MB
 
@@ -168,6 +183,19 @@ const DetailProgram: React.FC<{ id: number }> = ({ id }) => {
                                 </span>
                             </div>
                         </div>
+                        <button
+                            type='button'
+                            onClick={handleLaunchProgram}
+                            className='px-6 py-3 bg-blue-400 w-full text-sm text-gray-50 rounded-md font-medium hover:bg-blue-900'
+                        >
+                            {loadingLaunch ? (
+                                <span className='loading loading-spinner loading-sm'></span>
+                            ) : !data?.data.isLaunched ? (
+                                "Lancer programme 🚀"
+                            ) : (
+                                "Deactiver 😐"
+                            )}
+                        </button>
                     </div>
                     <div className='p-2'>
                         <button className='px-6 py-3 bg-primary w-full text-sm text-gray-50 rounded-md font-medium hover:bg-blue-900'>
@@ -176,19 +204,6 @@ const DetailProgram: React.FC<{ id: number }> = ({ id }) => {
                     </div>
                 </div>
             </div>
-            {/* {data?.data?.moderators?.length! !== 0 && (
-                <div className='flex flex-col gap-4'>
-                    <h3 className='font-semibold text-primary'>
-                        Les Moderateurs de l'evenement 🎤{" "}
-                    </h3>
-                    <ModeratorData moderators={data?.data?.moderators!} />
-                </div>
-            )}
-            <ModeratorModal
-                eventId={data?.data.id!}
-                modalIsOpen={modalIsOpen}
-                setIsOpen={setIsOpen}
-            /> */}
         </div>
     );
 };

@@ -19,6 +19,7 @@ export type TprogramType = {
     thumbnail: string;
     price?: number; // Optional, defaults to 0
     date_from: string;
+    isLaunched: boolean;
     date_to: string;
 };
 

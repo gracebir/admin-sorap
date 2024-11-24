@@ -119,6 +119,24 @@ const programApi = apiSlice.injectEndpoints({
             },
             providesTags: ["program"],
         }),
+        launchProgram: builder.mutation<
+            {
+                statusCode: number;
+                status: string;
+                message: string;
+                data: TprogramType;
+            },
+            { id: number }
+        >({
+            query: ({ id }) => {
+                return {
+                    url: `/program/launch/${id}`,
+                    method: "PUT",
+                    credentials: "include",
+                };
+            },
+            invalidatesTags: ["program"],
+        }),
     }),
 });
 
@@ -134,6 +152,7 @@ export const {
     useUpdateProgramMutation,
     useGetProgramByIdQuery,
     useUpdateProgramThumbnailMutation,
+    useLaunchProgramMutation,
 } = programApi;
 
 export default programSlice;
