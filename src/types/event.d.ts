@@ -41,6 +41,7 @@ export type TEvent = {
         email: string; // unique constraint handled by Prisma, not TypeScript
         eventId?: number | null;
     }>;
+    EventSponsor: Array<EventSponsor>;
     createdAt: Date;
     updatedAt: Date;
     participants: Participant[]; // Assuming Participant is defined elsewhere
@@ -100,4 +101,19 @@ export type TModeratorProfileType = {
     phone: string;
     avatar: string;
     email: string;
+};
+
+export type Pattern = {
+    avatar: string;
+    company: string;
+};
+
+export type EventSponsor = {
+    id: number;
+    patternId: number;
+    pattern: Pattern;
+    note: string;
+    amount: number;
+    createdAt: string; // or Date if you're parsing to a Date object
+    updatedAt: string; // or Date if you're parsing to a Date object
 };

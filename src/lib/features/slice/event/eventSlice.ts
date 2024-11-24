@@ -104,7 +104,7 @@ const eventApi = apiSlice.injectEndpoints({
             invalidatesTags: ["event"],
         }),
         updateEventThumbnail: builder.mutation<
-            TEvent,
+            { status: string; message: string; data: TEvent },
             { id: number; event: Partial<TCreateEventInput> }
         >({
             query: ({ id, event }) => {
@@ -176,6 +176,30 @@ const eventApi = apiSlice.injectEndpoints({
             },
             invalidatesTags: ["event"],
         }),
+        addEventSponsor: builder.mutation<
+            {
+                statusCode: string;
+                status: string;
+                message: string;
+                data: TEvent;
+            },
+            {
+                eventId: number;
+                patternId: number;
+                amount?: number;
+                note?: string;
+            }
+        >({
+            query: (value) => {
+                return {
+                    url: "/event/sponsor/add",
+                    credentials: "include",
+                    body: value,
+                    method: "POST",
+                };
+            },
+            invalidatesTags: ["event"],
+        }),
     }),
 });
 
@@ -195,6 +219,7 @@ export const {
     useUpdateEventThumbnailMutation,
     useLaunchEventMutation,
     useUpdateModeratorMutation,
+    useAddEventSponsorMutation,
 } = eventApi;
 
 export default eventSlice;

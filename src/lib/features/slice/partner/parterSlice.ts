@@ -53,6 +53,23 @@ const partnerApi = apiSlice.injectEndpoints({
             },
             providesTags: ["partner"],
         }),
+        searchPartnerByCompany: builder.query<
+            {
+                statusCode: number;
+                status: string;
+                message: string;
+                data: Array<TPartner>;
+            },
+            { company: string | "" }
+        >({
+            query: ({ company }) => {
+                return {
+                    url: `/partner/search?company=${company}`,
+                    credentials: "include",
+                };
+            },
+            providesTags: ["event"],
+        }),
         getPartnerById: builder.query<
             {
                 statusCode: number;
@@ -126,6 +143,7 @@ export const {
     useGetPartnerByIdQuery,
     useUpdatePartnerMutation,
     useUpdatePartnerAvatarMutation,
+    useSearchPartnerByCompanyQuery,
 } = partnerApi;
 
 export default partnerSlice;
