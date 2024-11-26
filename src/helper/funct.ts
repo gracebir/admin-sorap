@@ -37,6 +37,8 @@ export const createProgramFormData = (input: TcreateProgramEntry): FormData => {
 
     // Append each field from TCreateEventInput to the FormData
     formData.append("title", input.title);
+    formData.append("programCategory", input.programCategory);
+    formData.append("location", input.location);
     formData.append("description", input.description);
     formData.append("date_from", input.date_from); // Convert Date to string
     formData.append("date_to", input.date_to); // Convert Date to string

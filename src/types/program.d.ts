@@ -4,6 +4,8 @@ export type TcreateProgramEntry = {
     title: string;
     description: string;
     edition: string;
+    programCategory: string;
+    location: string;
     thumbnail: File | null;
     price?: number;
     date_from: string;

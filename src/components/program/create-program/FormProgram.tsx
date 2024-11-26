@@ -4,10 +4,12 @@
 import Button from "@/components/common/buttons/Button";
 import ErrorMessage from "@/components/common/ErrorMessage";
 import FormGroup from "@/components/common/FormGroup";
+import SelectInput from "@/components/common/inputs/SelectInput";
 import TextArea from "@/components/common/inputs/TextArea";
 import TextField from "@/components/common/inputs/TextField";
 import PageTitle from "@/components/common/PageTitle";
 import { useCreateProgramMutation } from "@/lib/features/slice/program/programSlice";
+import { CategoryProgramOptions, LocationOptions } from "@/utils/constasts";
 import { useFormik } from "formik";
 import React, { useState } from "react";
 import { MdOutlineFileDownload } from "react-icons/md";
@@ -44,6 +46,8 @@ const FormProgram = () => {
             initialValues: {
                 title: "",
                 description: "",
+                programCategory: "",
+                location: "",
                 edition: "",
                 date_from: "",
                 date_to: "",
@@ -118,6 +122,28 @@ const FormProgram = () => {
                                     handleChange={handleChange}
                                     label='Le Prix'
                                     type='number'
+                                />
+                            </FormGroup>
+                            <FormGroup variant='col-2'>
+                                <SelectInput
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    name='programCategory'
+                                    touched={touched.programCategory!}
+                                    error={errors.programCategory!}
+                                    value={values.programCategory}
+                                    options={CategoryProgramOptions}
+                                    label='Category Du Programme'
+                                />
+                                <SelectInput
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    name='location'
+                                    touched={touched.location!}
+                                    error={errors.location!}
+                                    value={values.location}
+                                    options={LocationOptions}
+                                    label='Localisation'
                                 />
                             </FormGroup>
                             <FormGroup variant='col-2'>

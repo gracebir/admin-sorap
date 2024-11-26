@@ -8,7 +8,7 @@ import TextArea from "@/components/common/inputs/TextArea";
 import TextField from "@/components/common/inputs/TextField";
 import PageTitle from "@/components/common/PageTitle";
 import { useCreateEventMutation } from "@/lib/features/slice/event/eventSlice";
-import { eventOptions } from "@/utils/constasts";
+import { eventOptions, LocationOptions } from "@/utils/constasts";
 import { useFormik } from "formik";
 import React, { useState } from "react";
 import { MdOutlineFileDownload } from "react-icons/md";
@@ -96,16 +96,15 @@ const FormEvent = () => {
                                     label="Theme de l'evenement"
                                     type='text'
                                 />
-                                <TextField
-                                    handleBlur={handleBlur}
-                                    error={errors.location!}
-                                    touched={touched.location!}
-                                    value={values.location}
+                                <SelectInput
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
                                     name='location'
-                                    placeholder='e.g. Mama yemo coin sandowa'
-                                    handleChange={handleChange}
+                                    touched={touched.location!}
+                                    error={errors.location!}
+                                    value={values.location}
+                                    options={LocationOptions}
                                     label='Localisation'
-                                    type='text'
                                 />
                             </FormGroup>
                             <FormGroup variant='col-2'>

@@ -142,3 +142,16 @@ export const eventOptions = [
     { value: "HACKATHON", label: "Hackathon" },
     { value: "CONFERENCE", label: "Conference" },
 ];
+
+export const LocationOptions = [
+    { value: "ONLINE", label: "En Ligne" },
+    { value: "ONSITE", label: "En Presentielle" },
+    { value: "REPLAY", label: "En Replay" },
+];
+
+export const CategoryProgramOptions = [
+    { value: "WEBDESIGN", label: "Design" },
+    { value: "WEBDEVELOPMENT", label: "Web Development" },
+    { value: "NETWORK", label: "IT Reseaux" },
+    { value: "DATAANALYSIS", label: "Data Analysis" },
+];

@@ -13,7 +13,7 @@ import {
     useGetEventByIdQuery,
     useUpdateEventMutation,
 } from "@/lib/features/slice/event/eventSlice";
-import { eventOptions } from "@/utils/constasts";
+import { eventOptions, LocationOptions } from "@/utils/constasts";
 import { useFormik } from "formik";
 import { MdOutlineFileDownload } from "react-icons/md";
 import { toast } from "react-toastify";
@@ -117,16 +117,15 @@ const FormEdit: React.FC<{ id: number }> = ({ id }) => {
                                     label="Theme de l'evenement"
                                     type='text'
                                 />
-                                <TextField
-                                    handleBlur={handleBlur}
-                                    error={errors.location!}
-                                    touched={touched.location!}
-                                    value={values.location}
+                                <SelectInput
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
                                     name='location'
-                                    placeholder='e.g. Mama yemo coin sandowa'
-                                    handleChange={handleChange}
+                                    touched={touched.location!}
+                                    error={errors.location!}
+                                    value={values.location}
+                                    options={LocationOptions}
                                     label='Localisation'
-                                    type='text'
                                 />
                             </FormGroup>
                             <FormGroup variant='col-2'>
