@@ -1,5 +1,7 @@
 /** @format */
 
+import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
+
 type AuthState = {
     user: {
         id: number;
@@ -50,4 +52,8 @@ type PasswordInputType = {
     value: string | number;
     handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     handleBlur: (e: React.FocusEvent<HTMLInputElement, Element>) => void;
+};
+
+type Parameter = {
+    params: Params;
 };

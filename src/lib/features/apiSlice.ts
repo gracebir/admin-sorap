@@ -7,6 +7,15 @@ export const apiSlice = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: process.env.NEXT_PUBLIC_BASE_API!,
     }),
-    tagTypes: ["api"],
+    tagTypes: [
+        "api",
+        "event",
+        "program",
+        "user",
+        "instructor",
+        "moderator",
+        "participant",
+        "partner",
+    ],
     endpoints: () => ({}),
 });

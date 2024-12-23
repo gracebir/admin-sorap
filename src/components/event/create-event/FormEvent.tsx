@@ -1,20 +1,25 @@
 /** @format */
 "use client";
 import Button from "@/components/common/buttons/Button";
+import ErrorMessage from "@/components/common/ErrorMessage";
 import FormGroup from "@/components/common/FormGroup";
 import SelectInput from "@/components/common/inputs/SelectInput";
 import TextArea from "@/components/common/inputs/TextArea";
 import TextField from "@/components/common/inputs/TextField";
 import PageTitle from "@/components/common/PageTitle";
-import { eventOptions } from "@/utils/constasts";
+import { useCreateEventMutation } from "@/lib/features/slice/event/eventSlice";
+import { eventOptions, LocationOptions } from "@/utils/constasts";
 import { useFormik } from "formik";
 import React, { useState } from "react";
 import { MdOutlineFileDownload } from "react-icons/md";
+import { toast } from "react-toastify";
 
 const FormEvent = () => {
     const [thumbnail, setThumbnail] = useState<string | null>(null);
     const [hovered, setHovered] = useState<boolean>(false);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const [createEvent, { isLoading, error, isError }] =
+        useCreateEventMutation();
 
     const MAX_SIZE = 2 * 1024 * 1024; // 2MB
 
@@ -46,18 +51,22 @@ const FormEvent = () => {
                 price: 0,
                 eventType: "",
             },
-            onSubmit: (value) => {
-                const format = new FormData();
-                format.append("theme", value.theme);
-                format.append("location", value.location);
-                format.append("description", value.description);
-                format.append("start_date", value.start_date);
-                format.append("end_date", value.end_date);
-                format.append("price", "" + value.price);
-                format.append("end_date", value.end_date);
-                format.append("eventType", value.eventType);
-                format.append("thumbnail", selectedFile!);
-                console.log(format, value);
+            onSubmit: async (value, { resetForm }) => {
+                try {
+                    const response = await createEvent({
+                        ...value,
+                        start_date: value.start_date,
+                        end_date: value.end_date,
+                        thumbnail: selectedFile!,
+                    }).unwrap();
+                    if (response.status === "success") {
+                        toast.success(response?.message);
+                    }
+                } catch (error) {
+                    toast.error("Oops un erreur se produit");
+                } finally {
+                    resetForm();
+                }
             },
         });
     return (
@@ -87,16 +96,15 @@ const FormEvent = () => {
                                     label="Theme de l'evenement"
                                     type='text'
                                 />
-                                <TextField
-                                    handleBlur={handleBlur}
-                                    error={errors.location!}
-                                    touched={touched.location!}
-                                    value={values.location}
+                                <SelectInput
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
                                     name='location'
-                                    placeholder='e.g. Mama yemo coin sandowa'
-                                    handleChange={handleChange}
+                                    touched={touched.location!}
+                                    error={errors.location!}
+                                    value={values.location}
+                                    options={LocationOptions}
                                     label='Localisation'
-                                    type='text'
                                 />
                             </FormGroup>
                             <FormGroup variant='col-2'>
@@ -132,7 +140,7 @@ const FormEvent = () => {
                                     placeholder=''
                                     handleChange={handleChange}
                                     label='Date du debut'
-                                    type='date'
+                                    type='datetime-local'
                                 />
                                 <TextField
                                     handleBlur={handleBlur}
@@ -143,7 +151,7 @@ const FormEvent = () => {
                                     placeholder=''
                                     handleChange={handleChange}
                                     label='Date de la fin'
-                                    type='date'
+                                    type='datetime-local'
                                 />
                             </FormGroup>
                             <FormGroup variant='col-1'>
@@ -159,8 +167,16 @@ const FormEvent = () => {
                                 />
                             </FormGroup>
                         </div>
+                        {isError && (
+                            //@ts-ignore
+                            <ErrorMessage text={error?.data?.error_message} />
+                        )}
                         <div className='flex justify-end'>
-                            <Button type='submit' text='Creer' />
+                            <Button
+                                type='submit'
+                                text='Creer'
+                                isLoading={isLoading}
+                            />
                         </div>
                     </div>
                 </div>

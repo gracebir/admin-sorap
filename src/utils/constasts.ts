@@ -6,6 +6,10 @@ import { TbMessage2Question } from "react-icons/tb";
 import { RiFeedbackLine } from "react-icons/ri";
 import { LiaStoreAltSolid } from "react-icons/lia";
 import { Product } from "@/types/dashboard";
+import { LiaUserTieSolid } from "react-icons/lia";
+import { IoCalendarSharp } from "react-icons/io5";
+import { BsCameraVideo } from "react-icons/bs";
+import { SiWebmoney } from "react-icons/si";
 
 export const SidebarItems = [
     {
@@ -17,8 +21,26 @@ export const SidebarItems = [
     {
         name: "event",
         path: "/admin/events",
-        text: "Events",
+        text: "Evenement",
         Icon: LuCalendar,
+    },
+    {
+        name: "partner",
+        path: "/admin/partner",
+        text: "Parteneur",
+        Icon: SiWebmoney,
+    },
+    {
+        name: "instructor",
+        path: "/admin/instructor",
+        text: "Titeur",
+        Icon: LiaUserTieSolid,
+    },
+    {
+        name: "program",
+        path: "/admin/program",
+        text: "Programme",
+        Icon: IoCalendarSharp,
     },
     {
         name: "blogs",
@@ -44,6 +66,12 @@ export const SidebarItems = [
         path: "/admin/feedback",
         text: "Feedback",
         Icon: RiFeedbackLine,
+    },
+    {
+        name: "project",
+        path: "/admin/project",
+        text: "Project",
+        Icon: BsCameraVideo,
     },
 ];
 
@@ -113,4 +141,17 @@ export const eventOptions = [
     { value: "ATELIER", label: "Atelier" },
     { value: "HACKATHON", label: "Hackathon" },
     { value: "CONFERENCE", label: "Conference" },
+];
+
+export const LocationOptions = [
+    { value: "ONLINE", label: "En Ligne" },
+    { value: "ONSITE", label: "En Presentielle" },
+    { value: "REPLAY", label: "En Replay" },
+];
+
+export const CategoryProgramOptions = [
+    { value: "WEBDESIGN", label: "Design" },
+    { value: "WEBDEVELOPMENT", label: "Web Development" },
+    { value: "NETWORK", label: "IT Reseaux" },
+    { value: "DATAANALYSIS", label: "Data Analysis" },
 ];

@@ -1,5 +1,6 @@
 /** @format */
 
+import { InputType } from "@/type";
 import React from "react";
 
 const TextField: React.FC<InputType> = ({
