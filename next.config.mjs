@@ -4,6 +4,7 @@
  */
 
 const nextConfig = {
+    transpilePackages: ["@mdxeditor/editor"],
     images: {
         remotePatterns: [
             {
