@@ -16,7 +16,9 @@ const RichTextEditor: React.FC<{
 }> = ({ handleValue, id, value, label, height = 300 }) => {
   return (
     <div className="">
-      <label htmlFor="">{label}</label>
+      <label className="font-semibold text-sm" htmlFor="">
+        {label}
+      </label>
       <div data-color-mode="light">
         <MDEditor
           id={id}

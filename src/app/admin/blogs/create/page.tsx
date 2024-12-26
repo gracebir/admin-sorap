@@ -1,5 +1,10 @@
+import CreateBlogForm from "@/components/blog/add-blog/CreateBlogForm";
 import React from "react";
 
 export default function Create() {
-  return <div></div>;
+  return (
+    <main>
+      <CreateBlogForm />
+    </main>
+  );
 }

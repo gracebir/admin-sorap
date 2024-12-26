@@ -116,7 +116,6 @@ export const createBlogFormData = (input: TcreateBlog): FormData => {
   const formData = new FormData();
   formData.append("title", input.title);
   formData.append("content", input.content);
-  formData.append("eventId", input.eventId?.toString()!);
   formData.append("categoryId", input.categoryId.toString()!);
   formData.append("thumbnail", input.thumbnail!);
   return formData;

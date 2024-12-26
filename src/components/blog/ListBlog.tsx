@@ -24,7 +24,7 @@ const ListBlog = () => {
           <div className="flex justify-between items-center mb-2">
             <Link
               className="bg-primary text-white text-sm px-6 py-2 font-semibold duration-300 rounded-3xl hover:bg-blue-800"
-              href={"/admin/partner/create"}
+              href={"/admin/blogs/create"}
             >
               Ajouter un Blog
             </Link>
@@ -38,7 +38,7 @@ const ListBlog = () => {
             <ImWarning size={80} />
             <Link
               className="bg-primary text-white text-sm px-6 py-2 font-semibold duration-300 rounded-3xl hover:bg-blue-800"
-              href={"/admin/partner/create"}
+              href={"/admin/blogs/create"}
             >
               Ajouter un blog
             </Link>
