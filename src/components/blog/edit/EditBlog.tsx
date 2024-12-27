@@ -94,145 +94,140 @@ const EditBlog: React.FC<{ id: number }> = ({ id }) => {
         }
     }, [data, loading, setValues]);
 
+    if (loading)
+        return (
+            <div className='min-h-[70svh] flex justify-center items-center'>
+                <span className='loading loading-spinner loading-lg'></span>
+            </div>
+        );
+
     return (
         <div className='flex flex-col gap-6 md:gap-8'>
             <PageTitle text='Modifier un blog' />
-            {loading ? (
-                <div className='min-h-[70svh] flex justify-center items-center'>
-                    <span className='loading loading-spinner loading-lg'></span>
+
+            <form
+                onSubmit={handleSubmit}
+                className='grid lg:grid-cols-4 md:grid-cols-5 grid-cols-1 gap-5'
+            >
+                <div className='lg:col-span-3 md:col-span-3  order-2 md:order-2 lg:order-1 shadow-md flex flex-col border-gray-200 border rounded-md'>
+                    <div className='px-6 py-2 border-b border-gray-300'>
+                        <h3 className='text-sm lg:text-base font-semibold'>
+                            Info sur post
+                        </h3>
+                    </div>
+                    <div className='px-6 py-5 flex flex-col gap-4'>
+                        <div className='flex flex-col gap-4'>
+                            <FormGroup variant='col-2'>
+                                <TextField
+                                    handleBlur={handleBlur}
+                                    error={errors.title!}
+                                    touched={touched.title!}
+                                    value={values.title}
+                                    name='title'
+                                    placeholder='e.g. New JavaScript pipeline operator'
+                                    handleChange={handleChange}
+                                    label='Titre du blog'
+                                    type='text'
+                                />
+                                <SelectInput
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    name='categoryId'
+                                    touched={touched.categoryId!}
+                                    error={errors.categoryId!}
+                                    value={values.categoryId}
+                                    options={blogsOptions}
+                                    label='Categories'
+                                />
+                            </FormGroup>
+
+                            <FormGroup variant='col-1'>
+                                {content.length !== 0 && (
+                                    <RichTextEditor
+                                        handleValue={(text?: string) =>
+                                            setContent(text!)
+                                        }
+                                        label='Contenu'
+                                        value={content}
+                                    />
+                                )}
+                            </FormGroup>
+                        </div>
+                        {isError && (
+                            //@ts-ignore
+                            <ErrorMessage text={error?.data?.error_message} />
+                        )}
+                        <div className='flex justify-end'>
+                            <Button
+                                type='submit'
+                                text='Modifier'
+                                isLoading={isLoading}
+                            />
+                        </div>
+                    </div>
                 </div>
-            ) : (
-                <form
-                    onSubmit={handleSubmit}
-                    className='grid lg:grid-cols-4 md:grid-cols-5 grid-cols-1 gap-5'
-                >
-                    <div className='lg:col-span-3 md:col-span-3  order-2 md:order-2 lg:order-1 shadow-md flex flex-col border-gray-200 border rounded-md'>
+                <div className='col-span-1 lg:col-span-1 md:col-span-2 order-1 md:order-1 lg:order-2 w-full'>
+                    <div className='w-full shadow-md border-gray-200 border'>
                         <div className='px-6 py-2 border-b border-gray-300'>
                             <h3 className='text-sm lg:text-base font-semibold'>
-                                Info sur post
+                                Photo
                             </h3>
                         </div>
-                        <div className='px-6 py-5 flex flex-col gap-4'>
-                            <div className='flex flex-col gap-4'>
-                                <FormGroup variant='col-2'>
-                                    <TextField
-                                        handleBlur={handleBlur}
-                                        error={errors.title!}
-                                        touched={touched.title!}
-                                        value={values.title}
-                                        name='title'
-                                        placeholder='e.g. New JavaScript pipeline operator'
-                                        handleChange={handleChange}
-                                        label='Titre du blog'
-                                        type='text'
-                                    />
-                                    <SelectInput
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        name='categoryId'
-                                        touched={touched.categoryId!}
-                                        error={errors.categoryId!}
-                                        value={values.categoryId}
-                                        options={blogsOptions}
-                                        label='Categories'
-                                    />
-                                </FormGroup>
-
-                                <FormGroup variant='col-1'>
-                                    {content.length !== 0 && (
-                                        <RichTextEditor
-                                            handleValue={(text?: string) =>
-                                                setContent(text!)
-                                            }
-                                            label='Contenu'
-                                            value={content}
+                        <div className='py-4 px-6'>
+                            <div className='w-full h-[200px] border border-blue-300 bg-blue-100 rounded-md relative'>
+                                {thumbnail ? (
+                                    <div
+                                        className='w-full h-full relative'
+                                        onMouseEnter={() => setHovered(true)}
+                                        onMouseLeave={() => setHovered(false)}
+                                    >
+                                        <img
+                                            src={thumbnail}
+                                            alt='event-thumbnail'
+                                            className='w-full h-full object-contain rounded-md'
                                         />
-                                    )}
-                                </FormGroup>
-                            </div>
-                            {isError && (
-                                //@ts-ignore
-                                <ErrorMessage
-                                    text={error?.data?.error_message}
-                                />
-                            )}
-                            <div className='flex justify-end'>
-                                <Button
-                                    type='submit'
-                                    text='Modifier'
-                                    isLoading={isLoading}
-                                />
-                            </div>
-                        </div>
-                    </div>
-                    <div className='col-span-1 lg:col-span-1 md:col-span-2 order-1 md:order-1 lg:order-2 w-full'>
-                        <div className='w-full shadow-md border-gray-200 border'>
-                            <div className='px-6 py-2 border-b border-gray-300'>
-                                <h3 className='text-sm lg:text-base font-semibold'>
-                                    Photo
-                                </h3>
-                            </div>
-                            <div className='py-4 px-6'>
-                                <div className='w-full h-[200px] border border-blue-300 bg-blue-100 rounded-md relative'>
-                                    {thumbnail ? (
-                                        <div
-                                            className='w-full h-full relative'
-                                            onMouseEnter={() =>
-                                                setHovered(true)
-                                            }
-                                            onMouseLeave={() =>
-                                                setHovered(false)
-                                            }
-                                        >
-                                            <img
-                                                src={thumbnail}
-                                                alt='event-thumbnail'
-                                                className='w-full h-full object-contain rounded-md'
-                                            />
-                                            {hovered && (
-                                                <div className='absolute inset-0 flex flex-col justify-center items-center bg-blue-300 bg-opacity-50'>
-                                                    <MdOutlineFileDownload
-                                                        className='text-white'
-                                                        size={25}
-                                                    />
-                                                    <p className='text-white'>
-                                                        Changer la photo
-                                                    </p>
-                                                </div>
-                                            )}
-                                        </div>
-                                    ) : (
-                                        <div className='flex items-center justify-center h-full'>
-                                            <div className='flex flex-col items-center'>
-                                                <div className='bg-blue-300 rounded-full p-4'>
-                                                    <MdOutlineFileDownload
-                                                        className='text-primary'
-                                                        size={25}
-                                                    />
-                                                </div>
-                                                <div className='text-center'>
-                                                    <p>
-                                                        Clicker pour
-                                                        selectionner ou glisser
-                                                        deposer
-                                                    </p>
-                                                    <span>PNG, JPEG, JPG.</span>
-                                                </div>
+                                        {hovered && (
+                                            <div className='absolute inset-0 flex flex-col justify-center items-center bg-blue-300 bg-opacity-50'>
+                                                <MdOutlineFileDownload
+                                                    className='text-white'
+                                                    size={25}
+                                                />
+                                                <p className='text-white'>
+                                                    Changer la photo
+                                                </p>
+                                            </div>
+                                        )}
+                                    </div>
+                                ) : (
+                                    <div className='flex items-center justify-center h-full'>
+                                        <div className='flex flex-col items-center'>
+                                            <div className='bg-blue-300 rounded-full p-4'>
+                                                <MdOutlineFileDownload
+                                                    className='text-primary'
+                                                    size={25}
+                                                />
+                                            </div>
+                                            <div className='text-center'>
+                                                <p>
+                                                    Clicker pour selectionner ou
+                                                    glisser deposer
+                                                </p>
+                                                <span>PNG, JPEG, JPG.</span>
                                             </div>
                                         </div>
-                                    )}
-                                    <input
-                                        type='file'
-                                        accept='image/png, image/jpeg, image/jpg'
-                                        className='absolute inset-0 opacity-0 cursor-pointer'
-                                        onChange={handleImageUpload}
-                                    />
-                                </div>
+                                    </div>
+                                )}
+                                <input
+                                    type='file'
+                                    accept='image/png, image/jpeg, image/jpg'
+                                    className='absolute inset-0 opacity-0 cursor-pointer'
+                                    onChange={handleImageUpload}
+                                />
                             </div>
                         </div>
                     </div>
-                </form>
-            )}
+                </div>
+            </form>
         </div>
     );
 };
