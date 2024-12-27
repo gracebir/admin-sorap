@@ -25,7 +25,7 @@ const Sidebar = () => {
         <aside
             className={`bg-primary text-white transition-all flex flex-col justify-between duration-300 ${
                 isOpen ? "w-full" : "w-auto"
-            } duration-300 max-w-[300px] h-full`}
+            } duration-300 max-w-[300px] h-full top-0 bottom-0`}
         >
             <div>
                 <div className='p-4 flex justify-center md:justify-end'>

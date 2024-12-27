@@ -16,3 +16,10 @@
 .reactMarkDown p {
     margin: 0.525rem 0;
 }
+
+.mdxeditor-popup-container,
+._editorRoot_uazmk_53,
+._popupContainer_uazmk_1220 {
+    display: none !important;
+    height: 0;
+}
