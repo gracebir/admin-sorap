@@ -55,7 +55,7 @@ const blogApi = apiSlice.injectEndpoints({
             query: (value) => {
                 const formaData = createBlogFormData(value.value);
                 return {
-                    url: `/blog/create/${value.id}`,
+                    url: `/blog/update/${value.id}`,
                     body: formaData,
                     method: "PUT",
                     credentials: "include",
