@@ -1,11 +1,12 @@
 /** @format */
 
+import ListBlog from "@/components/blog/ListBlog";
 import React from "react";
 
 export default function Blogs() {
-    return (
-        <main>
-            <h1>Blogs</h1>
-        </main>
-    );
+  return (
+    <main>
+      <ListBlog />
+    </main>
+  );
 }
