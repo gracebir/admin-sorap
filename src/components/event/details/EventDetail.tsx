@@ -21,6 +21,7 @@ import { toast } from "react-toastify";
 import AddSponsor from "../sponsor/AddSponsor";
 import SponsorData from "../table-data/SponsorData";
 import DefaultButton from "@/components/common/buttons/DefaultButton";
+import { HiMiniLanguage } from "react-icons/hi2";
 
 const DetailEvent: React.FC<{ id: number }> = ({ id }) => {
     const { data, isLoading } = useGetEventByIdQuery({ id });
@@ -144,15 +145,25 @@ const DetailEvent: React.FC<{ id: number }> = ({ id }) => {
                     </div>
                 )}
             </div>
-            <Link
-                className='flex text-blue-500 hover:underline gap-1'
-                href={"/admin/events"}
-            >
-                <IoIosArrowRoundBack size={20} />
-                <span className='text-sm font-semibold'>
-                    Retour à tous les événements
-                </span>
-            </Link>
+            <div className='flex justify-between items-center'>
+                <Link
+                    className='flex text-blue-500 hover:underline gap-1'
+                    href={"/admin/events"}
+                >
+                    <IoIosArrowRoundBack size={20} />
+                    <span className='text-sm font-semibold'>
+                        Retour à tous les événements
+                    </span>
+                </Link>
+                <Link
+                    className='flex px-6 py-3 duration-300 items-center rounded-md bg-blue-600 text-white hover:bg-primary gap-1'
+                    href={`/admin/events/create-event/translate/${id}`}
+                >
+                    <HiMiniLanguage size={20} />
+                    <span className='text-sm font-semibold'>Traduire</span>
+                </Link>
+            </div>
+
             <div className='grid grid-cols-1 lg:grid-cols-6 gap-8'>
                 <div className=' lg:col-span-4 col-span-1 flex flex-col gap-6'>
                     <div className='bg-blue-100 rounded-md p-4 flex flex-col gap-3 items-start'>
@@ -160,15 +171,53 @@ const DetailEvent: React.FC<{ id: number }> = ({ id }) => {
                             {data?.data.eventType}
                         </span>
                         <h1 className='font-extrabold text-2xl lg:text-3xl text-primary'>
-                            {data?.data.theme}
+                            {data?.data.EventTranslation[0].theme}
                         </h1>
                     </div>
                     <div>
-                        <h3 className='text-lg lg:text-xl font-semibold'>
+                        <h3 className='text-lg lg:text-xl font-semibold my-4'>
                             Description
                         </h3>
-                        <p className='text-sm'>{data?.data.description}</p>
+                        <p className='text-sm'>
+                            {data?.data.EventTranslation[0].description}
+                        </p>
+                        <Link
+                            className='text-blue-500 underline text-sm font-semibold'
+                            href={`/admin/events/edit/translate/${data?.data.EventTranslation[0].id}`}
+                        >
+                            modifier la traduiction
+                        </Link>
                     </div>
+                    {data?.data.EventTranslation.length === 2 && (
+                        <>
+                            <h1 className='text-blue-600 text-xl font-semibold'>
+                                Traduction en Anglais
+                            </h1>
+                            <div>
+                                <h1 className='text-xl md:text-2xl font-bold text-primary'>
+                                    {data?.data.EventTranslation[1].theme}
+                                </h1>
+
+                                <div>
+                                    <h3 className='text-lg lg:text-xl font-semibold my-4'>
+                                        Description
+                                    </h3>
+                                    <p className='text-sm'>
+                                        {
+                                            data?.data.EventTranslation[1]
+                                                .description
+                                        }
+                                    </p>
+                                    <Link
+                                        className='text-blue-500 underline text-sm font-semibold'
+                                        href={`/admin/events/edit/translate/${data?.data.EventTranslation[1].id}`}
+                                    >
+                                        Update translation
+                                    </Link>
+                                </div>
+                            </div>
+                        </>
+                    )}
                 </div>
                 <div className='lg:col-span-2 col-span-1'>
                     <div className='w-full shadow-sm rounded-md p-4 flex flex-col gap-6 lg:p-6 border border-blue-100'>

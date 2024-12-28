@@ -3,8 +3,11 @@
 import {
     EventStates,
     TCreateEventInput,
+    TCreateEventTranslation,
     TEvent,
+    TEventTranslation,
     TModerator,
+    TUpdateEventTranslation,
 } from "@/types/event";
 import { apiSlice } from "../../apiSlice";
 import { createSlice } from "@reduxjs/toolkit";
@@ -52,6 +55,23 @@ const eventApi = apiSlice.injectEndpoints({
             },
             providesTags: ["event"],
         }),
+        getEventTranslatedById: builder.query<
+            {
+                statusCode: number;
+                status: string;
+                message: string;
+                data: TEventTranslation;
+            },
+            { id: number }
+        >({
+            query: ({ id }) => {
+                return {
+                    url: `/event/detail/translation/${id}`,
+                    method: "GET",
+                    credentials: "include",
+                };
+            },
+        }),
         createEvent: builder.mutation<
             {
                 statusCode: number;
@@ -67,6 +87,44 @@ const eventApi = apiSlice.injectEndpoints({
                     url: "/event/create",
                     method: "POST",
                     body: formData,
+                    credentials: "include",
+                };
+            },
+            invalidatesTags: ["event"],
+        }),
+        createTranslation: builder.mutation<
+            {
+                statusCode: number;
+                status: string;
+                message: string;
+                data: TEventTranslation;
+            },
+            TCreateEventTranslation
+        >({
+            query: (value) => {
+                return {
+                    url: "/event/create/translation",
+                    method: "POST",
+                    body: value,
+                    credentials: "include",
+                };
+            },
+            invalidatesTags: ["event"],
+        }),
+        updateTranslation: builder.mutation<
+            {
+                statusCode: number;
+                status: string;
+                message: string;
+                data: TEventTranslation;
+            },
+            { id: number; value: TUpdateEventTranslation }
+        >({
+            query: ({ id, value }) => {
+                return {
+                    url: `/event/update/translation/${id}`,
+                    method: "PUT",
+                    body: value,
                     credentials: "include",
                 };
             },
@@ -212,6 +270,9 @@ const eventSlice = createSlice({
 export const {
     useGetAllEventQuery,
     useCreateEventMutation,
+    useCreateTranslationMutation,
+    useUpdateTranslationMutation,
+    useGetEventTranslatedByIdQuery,
     useAddPhotosMutation,
     useGetEventByIdQuery,
     useAddModeratorMutation,
