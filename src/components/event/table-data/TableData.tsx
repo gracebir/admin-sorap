@@ -1,31 +1,17 @@
 /** @format */
 "use client";
-import React, { useState } from "react";
-import { Eye, Pen, ChevronLeft, ChevronRight } from "lucide-react";
-import { useGetAllEventQuery } from "@/lib/features/slice/event/eventSlice";
+import React from "react";
+import { Eye, Pen } from "lucide-react";
 import { formatDateTimeToFrench } from "@/helper/funct";
 import { MdOutlineAddAPhoto } from "react-icons/md";
 import Link from "next/link";
+import { TEvent } from "@/types/event";
 
 const ITEMS_PER_PAGE = 4;
 
-export default function TableData() {
-    const [currentPage, setCurrentPage] = useState(1);
-    const { data: events, isLoading } = useGetAllEventQuery(null);
-    console.log(events);
-
-    const totalPages = Math.ceil((events?.data?.length || 0) / ITEMS_PER_PAGE);
-    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-    const endIndex = startIndex + ITEMS_PER_PAGE;
-    const currentPackages = events?.data?.slice(startIndex, endIndex);
-
-    if (isLoading)
-        return (
-            <div className='flex justify-center min-h-28'>
-                <span className='loading loading-spinner loading-lg'></span>
-            </div>
-        );
-
+const TableData: React.FC<{ currentEvents: Array<TEvent> }> = ({
+    currentEvents,
+}) => {
     return (
         <div className='bg-white shadow-md rounded-lg overflow-hidden'>
             <table className='min-w-full divide-y divide-gray-200'>
@@ -46,7 +32,7 @@ export default function TableData() {
                     </tr>
                 </thead>
                 <tbody className='bg-white divide-y divide-gray-200'>
-                    {currentPackages?.map((event, index) => (
+                    {currentEvents?.map((event, index) => (
                         <tr key={index}>
                             <td className='px-6 py-4 whitespace-nowrap'>
                                 <div className='text-sm font-medium text-gray-900'>
@@ -100,4 +86,6 @@ export default function TableData() {
             </table>
         </div>
     );
-}
+};
+
+export default TableData;
