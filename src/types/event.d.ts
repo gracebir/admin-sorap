@@ -42,6 +42,7 @@ export type TEvent = {
         eventId?: number | null;
     }>;
     EventSponsor: Array<EventSponsor>;
+    EventTranslation: Array<TEventTranslation>;
     createdAt: Date;
     updatedAt: Date;
     participants: Participant[]; // Assuming Participant is defined elsewhere
@@ -62,6 +63,26 @@ export type TCreateEventInput = {
     price: number;
     thumbnail: File | null;
     eventType: string;
+};
+
+export type TCreateEventTranslation = {
+    theme: string;
+    description: string;
+    eventId: number;
+    language: string;
+};
+
+export type TUpdateEventTranslation = {
+    theme: string;
+    description: string;
+};
+
+export type TEventTranslation = {
+    id: number;
+    theme: string;
+    description: string;
+    eventId: string;
+    language: string;
 };
 
 export type TModerator = {
