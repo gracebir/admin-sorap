@@ -7,6 +7,7 @@ import {
   TprogramState,
   TProgramTranslation,
   TprogramType,
+  TUpdateProgramTranslation,
 } from "@/types/program";
 import { apiSlice } from "../../apiSlice";
 import { createSlice } from "@reduxjs/toolkit";
@@ -125,6 +126,7 @@ const programApi = apiSlice.injectEndpoints({
           body: value,
         };
       },
+      invalidatesTags: ["program"],
     }),
     updateProgramTranslation: builder.mutation<
       {
@@ -133,7 +135,7 @@ const programApi = apiSlice.injectEndpoints({
         message: string;
         data: TProgramTranslation;
       },
-      { id: number; translation: TCreateProgramTranslation }
+      { id: number; translation: TUpdateProgramTranslation }
     >({
       query: ({ id, translation }) => {
         return {
@@ -143,6 +145,7 @@ const programApi = apiSlice.injectEndpoints({
           body: translation,
         };
       },
+      invalidatesTags: ["program"],
     }),
     getProgramTranslationById: builder.query<
       {

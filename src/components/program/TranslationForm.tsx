@@ -1,5 +1,3 @@
-/** @format */
-
 "use client";
 
 import Button from "@/components/common/buttons/Button";
@@ -8,42 +6,42 @@ import FormGroup from "@/components/common/FormGroup";
 import TextArea from "@/components/common/inputs/TextArea";
 import TextField from "@/components/common/inputs/TextField";
 import {
-  useCreateTranslationMutation,
-  useGetEventByIdQuery,
-} from "@/lib/features/slice/event/eventSlice";
+  useCreateProgramTranslationMutation,
+  useGetProgramByIdQuery,
+} from "@/lib/features/slice/program/programSlice";
+
 import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { toast } from "react-toastify";
 
-const TranslateForm: React.FC<{ id: number }> = ({ id }) => {
-  const { data, isLoading: loading } = useGetEventByIdQuery({ id });
+const TranslateFormProgram: React.FC<{ id: number }> = ({ id }) => {
+  const { data, isLoading: loading } = useGetProgramByIdQuery({ id });
   const router = useRouter();
   const [createTranslation, { isLoading, isError, error }] =
-    useCreateTranslationMutation();
+    useCreateProgramTranslationMutation();
 
   const { values, handleBlur, handleChange, errors, touched, handleSubmit } =
     useFormik({
       initialValues: {
-        theme: "",
+        title: "",
         description: "",
       },
       onSubmit: async (value, { resetForm }) => {
         try {
           const newValue = {
             ...value,
-            eventId: id,
-            language: "en",
+            programId: id,
           };
           const response = await createTranslation(newValue).unwrap();
           if (response.status === "success") {
             toast.success(response.message);
             setTimeout(() => {
-              router.push(`/admin/events/${id}`);
+              router.push(`/admin/program/${id}`);
             }, 2000);
           }
         } catch (error) {
-          toast.error("Il y a un erreur");
+          toast.error("Un erreur se produit");
         } finally {
           resetForm();
         }
@@ -59,8 +57,8 @@ const TranslateForm: React.FC<{ id: number }> = ({ id }) => {
   return (
     <div className="flex flex-col gap-6 ">
       <h1 className="text-xl md:text-2xl ">
-        Traduise l'evenement en Anglais:{" "}
-        <span className="font-bold text-lightBlue">{data?.data.theme}</span>
+        Traduise ce program en Anglais:{" "}
+        <span className="font-bold text-lightBlue">{data?.data.title}</span>
       </h1>
       <div className="flex flex-col gap-4">
         <h3 className="text-xl font-semibold">Voici la description</h3>
@@ -73,7 +71,7 @@ const TranslateForm: React.FC<{ id: number }> = ({ id }) => {
         <div className="lg:col-span-3 md:col-span-3  order-2 md:order-2 lg:order-1 shadow-md flex flex-col border-gray-200 border rounded-md">
           <div className="px-6 py-2 border-b border-gray-300">
             <h3 className="text-sm lg:text-base font-semibold">
-              Infomation sur l'evenement
+              Infomation sur le programme
             </h3>
           </div>
           <div className="px-6 py-5 flex flex-col gap-4">
@@ -81,10 +79,10 @@ const TranslateForm: React.FC<{ id: number }> = ({ id }) => {
               <FormGroup variant="col-1">
                 <TextField
                   handleBlur={handleBlur}
-                  error={errors.theme!}
-                  touched={touched.theme!}
-                  value={values.theme}
-                  name="theme"
+                  error={errors.title!}
+                  touched={touched.title!}
+                  value={values.title}
+                  name="title"
                   placeholder="e.g. Evolu du blockchain"
                   handleChange={handleChange}
                   label="Theme de l'evenement"
@@ -119,4 +117,4 @@ const TranslateForm: React.FC<{ id: number }> = ({ id }) => {
   );
 };
 
-export default TranslateForm;
+export default TranslateFormProgram;

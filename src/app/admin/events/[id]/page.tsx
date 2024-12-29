@@ -5,14 +5,14 @@ import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
 import React from "react";
 
 interface EventDetailProp {
-    params: Params;
+  params: Params;
 }
 
 export default function EventDetail({ params }: EventDetailProp) {
-    const { id } = params;
-    return (
-        <main className=''>
-            <DetailEvent id={id} />
-        </main>
-    );
+  const { id } = params;
+  return (
+    <main>
+      <DetailEvent id={id} />
+    </main>
+  );
 }

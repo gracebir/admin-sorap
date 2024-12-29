@@ -16,13 +16,14 @@ export type TprogramType = {
   id?: number;
   title: string;
   description: string;
-  edition: string; // Unique constraint
-  images?: string[]; // Optional, defaults to an empty array
+  edition: string;
+  images?: string[];
   thumbnail: string;
-  price?: number; // Optional, defaults to 0
+  price?: number;
   date_from: string;
   isLaunched: boolean;
   date_to: string;
+  ProgramTranslation: Array<TProgramTranslation>;
 };
 
 export type TprogramState = {
@@ -44,7 +45,12 @@ export type TCreateProgramTranslation = {
   programId: number;
   title: string;
   description: string;
-  language: string;
+};
+
+export type TUpdateProgramTranslation = {
+  programId: number;
+  title: string;
+  description: string;
 };
 
 export type TProgramTranslation = {
@@ -52,6 +58,7 @@ export type TProgramTranslation = {
   programId: number;
   title: string;
   description: string;
+  language: string;
 };
 
 export type TsponsorState = {
