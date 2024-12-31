@@ -124,7 +124,7 @@ export const careerApi = apiSlice.injectEndpoints({
         statusCode: string;
         status: string;
         message: string;
-        data: TJobTransLang;
+        data: TCareer;
       },
       { id: number }
     >({

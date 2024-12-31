@@ -1,5 +1,10 @@
+import ListJobs from "@/components/career/data";
 import React from "react";
 
 export default function CareerPage() {
-  return <main></main>;
+  return (
+    <main>
+      <ListJobs />
+    </main>
+  );
 }
