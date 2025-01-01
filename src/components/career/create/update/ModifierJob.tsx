@@ -7,18 +7,22 @@ import RichTextEditor from "@/components/common/inputs/RichTextEditor";
 import SelectInput from "@/components/common/inputs/SelectInput";
 import TextField from "@/components/common/inputs/TextField";
 import PageTitle from "@/components/common/PageTitle";
-import { useCreateJobMutation } from "@/lib/features/slice/career/careerSlice";
+import {
+  useGetJobByIdQuery,
+  useUpdateJobMutation,
+} from "@/lib/features/slice/career/careerSlice";
 import {
   departmentsOptions,
   jobTypesOptions,
   teamsOptions,
 } from "@/utils/constasts";
 import { useFormik } from "formik";
-import React from "react";
+import React, { useEffect } from "react";
 import { toast } from "react-toastify";
 
-const CreateJobForm = () => {
-  const [createJobFn, { isLoading, isError, error }] = useCreateJobMutation();
+const ModifierJob: React.FC<{ id: number }> = ({ id }) => {
+  const [updateJob, { isError, isLoading, error }] = useUpdateJobMutation();
+  const { data, isLoading: loading } = useGetJobByIdQuery({ id });
 
   const {
     values,
@@ -28,6 +32,7 @@ const CreateJobForm = () => {
     touched,
     errors,
     handleSubmit,
+    setValues,
   } = useFormik({
     initialValues: {
       title: "",
@@ -45,23 +50,51 @@ const CreateJobForm = () => {
       teamId: "",
       departmentId: "",
     },
-    onSubmit: async (value, { resetForm }) => {
+    onSubmit: async (value) => {
       try {
         const newValue = {
           ...value,
           teamId: parseInt(value.teamId),
           departmentId: parseInt(value.departmentId),
         };
-        const response = await createJobFn(newValue).unwrap();
+        const response = await updateJob({ id, body: newValue }).unwrap();
         if (response.status == "success") {
-          toast.success("Job create with Success");
-          resetForm();
+          toast.success("Job updated with Success");
         }
       } catch (error) {
         console.log(error);
       }
     },
   });
+
+  useEffect(() => {
+    if (loading || data?.data) {
+      setValues({
+        title: data?.data.title || "",
+        description: data?.data.description || "",
+        requirements: data?.data.requirements || "",
+        responsibilities: data?.data.responsibilities || "",
+        desirable: data?.data.desirable || "",
+        benefits: data?.data.benefits || "",
+        salaryRange: data?.data.salaryRange || "",
+        location: data?.data.location || "",
+        jobType: data?.data.jobType || "",
+        company: data?.data.company || "",
+        experienceLevel: data?.data.experienceLevel || "",
+        deadline: data?.data.deadline || "",
+        teamId: data?.data.teamId!.toString() || "",
+        departmentId: data?.data.departmentId!.toString() || "",
+      });
+    }
+  }, [data, loading, setValues]);
+
+  if (loading)
+    return (
+      <div className="min-h-[70svh] flex justify-center items-center">
+        <span className="loading loading-spinner loading-lg"></span>
+      </div>
+    );
+
   return (
     <div className="flex flex-col gap-6 md:gap-8">
       <PageTitle text="Create un blog" />
@@ -177,7 +210,7 @@ const CreateJobForm = () => {
               <ErrorMessage text={error?.data?.error_message} />
             )}
             <div className="flex justify-end">
-              <Button type="submit" text="Creer" isLoading={isLoading} />
+              <Button type="submit" text="Modifier" isLoading={isLoading} />
             </div>
           </div>
         </div>
@@ -186,4 +219,4 @@ const CreateJobForm = () => {
   );
 };
 
-export default CreateJobForm;
+export default ModifierJob;
