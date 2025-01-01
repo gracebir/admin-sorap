@@ -155,6 +155,32 @@ export const blogsOptions = [
   { value: "3", label: "CYBER SECURITY" },
 ];
 
+export const jobTypesOptions = [
+  { value: "FULL_TIME", label: "FULL TIME" },
+  { value: "PART_TIME", label: "PART TIME" },
+  { value: "CONTRACT", label: "CONTRACT" },
+  { value: "FREELANCE", label: "FREELANCE" },
+  { value: "INTERNSHIP", label: "INTERNSHIP" },
+];
+
+export const teamsOptions = [
+  { value: "1", label: "FRONTEND" },
+  { value: "2", label: "BACKEND" },
+  { value: "3", label: "QA" },
+  { value: "4", label: "DEVOPS" },
+  { value: "5", label: "UI/UX" },
+  { value: "6", label: "DATA ANALYTICS" },
+  { value: "7", label: "PROJECT MANAGEMENT" },
+];
+
+export const departmentsOptions = [
+  { value: "1", label: "ENGINEERING" },
+  { value: "2", label: "MARKETING" },
+  { value: "3", label: "DESIGN" },
+  { value: "4", label: "PRODUCT" },
+  { value: "5", label: "SALES" },
+];
+
 export const CategoryProgramOptions = [
   { value: "WEBDESIGN", label: "Design" },
   { value: "WEBDEVELOPMENT", label: "Web Development" },
