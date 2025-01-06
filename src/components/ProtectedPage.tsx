@@ -32,5 +32,5 @@ export default function ProtectedPage({
     );
   }
 
-  return <div>{children}</div>;
+  return <>{children}</>;
 }
