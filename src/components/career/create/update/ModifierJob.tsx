@@ -13,22 +13,30 @@ import {
 } from "@/lib/features/slice/career/careerSlice";
 import {
   departmentsOptions,
+  jobLevelsOptions,
   jobTypesOptions,
   teamsOptions,
 } from "@/utils/constasts";
-import { useFormik } from "formik";
-import React, { useEffect } from "react";
+import { Form, useFormik } from "formik";
+import Link from "next/link";
+import React, { useEffect, useState } from "react";
+import { IoMdArrowBack } from "react-icons/io";
 import { toast } from "react-toastify";
 
 const ModifierJob: React.FC<{ id: number }> = ({ id }) => {
   const [updateJob, { isError, isLoading, error }] = useUpdateJobMutation();
   const { data, isLoading: loading } = useGetJobByIdQuery({ id });
 
+  const [description, setDescription] = useState("");
+  const [requirements, setRequirements] = useState("");
+  const [responsibilities, setResponsibilities] = useState("");
+  const [desirable, setDesirable] = useState("");
+  const [benefits, setBenefits] = useState("");
+
   const {
     values,
     handleChange,
     handleBlur,
-    setFieldValue,
     touched,
     errors,
     handleSubmit,
@@ -36,11 +44,6 @@ const ModifierJob: React.FC<{ id: number }> = ({ id }) => {
   } = useFormik({
     initialValues: {
       title: "",
-      description: "",
-      requirements: "",
-      responsibilities: "",
-      desirable: "",
-      benefits: "",
       salaryRange: "",
       location: "",
       jobType: "",
@@ -54,6 +57,11 @@ const ModifierJob: React.FC<{ id: number }> = ({ id }) => {
       try {
         const newValue = {
           ...value,
+          description,
+          requirements,
+          responsibilities,
+          benefits,
+          desirable,
           teamId: parseInt(value.teamId),
           departmentId: parseInt(value.departmentId),
         };
@@ -69,22 +77,29 @@ const ModifierJob: React.FC<{ id: number }> = ({ id }) => {
 
   useEffect(() => {
     if (loading || data?.data) {
+      const formatDate = (dateString: string) => {
+        if (!dateString) return "";
+        const date = new Date(dateString);
+        const formattedDate = date.toISOString().slice(0, 16); // Get YYYY-MM-DDTHH:MM format
+        return formattedDate;
+      };
       setValues({
         title: data?.data.title || "",
-        description: data?.data.description || "",
-        requirements: data?.data.requirements || "",
-        responsibilities: data?.data.responsibilities || "",
-        desirable: data?.data.desirable || "",
-        benefits: data?.data.benefits || "",
         salaryRange: data?.data.salaryRange || "",
         location: data?.data.location || "",
         jobType: data?.data.jobType || "",
         company: data?.data.company || "",
         experienceLevel: data?.data.experienceLevel || "",
-        deadline: data?.data.deadline || "",
+        deadline: formatDate(data?.data.deadline!) || "",
         teamId: data?.data.teamId!.toString() || "",
         departmentId: data?.data.departmentId!.toString() || "",
       });
+
+      setDescription(data?.data.description || "");
+      setRequirements(data?.data.requirements || "");
+      setResponsibilities(data?.data.responsibilities || "");
+      setDesirable(data?.data.desirable || "");
+      setBenefits(data?.data.benefits || "");
     }
   }, [data, loading, setValues]);
 
@@ -97,20 +112,27 @@ const ModifierJob: React.FC<{ id: number }> = ({ id }) => {
 
   return (
     <div className="flex flex-col gap-6 md:gap-8">
-      <PageTitle text="Create un blog" />
+      <div className="flex justify-between items-center gap-6">
+        <PageTitle text="Modifier l'offre" />
+        <Link
+          className="bg-primary px-6 py-2 flex text-white gap-2 font-medium hover:bg-blue-900 rounded items-center"
+          href={"/admin/career"}
+        >
+          <IoMdArrowBack size={20} />
+          Annuler
+        </Link>
+      </div>
       <form
         onSubmit={handleSubmit}
         className="grid lg:grid-cols-4 md:grid-cols-5 grid-cols-1 gap-5"
       >
         <div className="lg:col-span-3 md:col-span-3  order-2 md:order-2 lg:order-1 shadow-md flex flex-col border-gray-200 border rounded-md">
           <div className="px-6 py-2 border-b border-gray-300">
-            <h3 className="text-sm lg:text-base font-semibold">
-              Info sur post
-            </h3>
+            <h3 className="text-sm lg:text-base font-semibold">Info du Job</h3>
           </div>
           <div className="px-6 py-5 flex flex-col gap-4">
             <div className="flex flex-col gap-4">
-              <FormGroup variant="col-2">
+              <FormGroup variant="col-1">
                 <TextField
                   handleBlur={handleBlur}
                   error={errors.title!}
@@ -119,9 +141,12 @@ const ModifierJob: React.FC<{ id: number }> = ({ id }) => {
                   name="title"
                   placeholder="e.g. New JavaScript pipeline operator"
                   handleChange={handleChange}
-                  label="Titre du blog"
+                  label="Titre du Job"
                   type="text"
                 />
+              </FormGroup>
+
+              <FormGroup variant="col-2">
                 <SelectInput
                   onChange={handleChange}
                   onBlur={handleBlur}
@@ -132,18 +157,41 @@ const ModifierJob: React.FC<{ id: number }> = ({ id }) => {
                   options={jobTypesOptions}
                   label="Categorie du Job"
                 />
+                <SelectInput
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  name="experienceLevel"
+                  touched={touched.experienceLevel!}
+                  error={errors.experienceLevel!}
+                  value={values.experienceLevel}
+                  options={jobLevelsOptions}
+                  label="Niveau Experience"
+                />
               </FormGroup>
 
               <FormGroup variant="col-1">
-                <RichTextEditor
-                  label="Description"
-                  value={values.description}
-                  handleValue={(value) => {
-                    setFieldValue("description", value);
-                  }}
+                <TextField
+                  handleBlur={handleBlur}
+                  error={errors.salaryRange!}
+                  touched={touched.salaryRange!}
+                  value={values.salaryRange}
+                  name="salaryRange"
+                  placeholder="e.g. 2000 - 3000"
+                  handleChange={handleChange}
+                  label="Salaire"
+                  type="text"
                 />
-                {errors.description && touched.description && (
-                  <div>{errors.description}</div>
+              </FormGroup>
+
+              <FormGroup variant="col-1">
+                {description.length !== 0 && (
+                  <RichTextEditor
+                    label="Description"
+                    value={description}
+                    handleValue={(value) => {
+                      setDescription(value!);
+                    }}
+                  />
                 )}
               </FormGroup>
               <FormGroup variant="col-2">
@@ -169,39 +217,60 @@ const ModifierJob: React.FC<{ id: number }> = ({ id }) => {
                 />
               </FormGroup>
               <FormGroup variant="col-1">
-                <RichTextEditor
-                  label="Requirements"
-                  value={values.requirements}
-                  handleValue={(value) => {
-                    setFieldValue("requirements", value);
-                  }}
-                />
+                {requirements.length !== 0 && (
+                  <RichTextEditor
+                    label="Requirements"
+                    value={requirements}
+                    handleValue={(value) => {
+                      setRequirements(value!);
+                    }}
+                  />
+                )}
               </FormGroup>
               <FormGroup variant="col-1">
-                <RichTextEditor
-                  label="Responsibilities"
-                  value={values.responsibilities}
-                  handleValue={(value) => {
-                    setFieldValue("responsibilities", value);
-                  }}
-                />
+                {responsibilities.length !== 0 && (
+                  <RichTextEditor
+                    label="Responsibilities"
+                    value={responsibilities}
+                    handleValue={(value) => {
+                      setResponsibilities(value!);
+                    }}
+                  />
+                )}
               </FormGroup>
               <FormGroup variant="col-1">
-                <RichTextEditor
-                  label="Desirable"
-                  value={values.desirable}
-                  handleValue={(value) => {
-                    setFieldValue("desirable", value);
-                  }}
-                />
+                {desirable.length !== 0 && (
+                  <RichTextEditor
+                    label="Desirable"
+                    value={desirable}
+                    handleValue={(value) => {
+                      setDesirable(value!);
+                    }}
+                  />
+                )}
               </FormGroup>
               <FormGroup variant="col-1">
-                <RichTextEditor
-                  label="Benefits"
-                  value={values.benefits}
-                  handleValue={(value) => {
-                    setFieldValue("benefits", value);
-                  }}
+                {benefits.length !== 0 && (
+                  <RichTextEditor
+                    label="Benefits"
+                    value={benefits}
+                    handleValue={(value) => {
+                      setBenefits(value!);
+                    }}
+                  />
+                )}
+              </FormGroup>
+              <FormGroup variant="col-1">
+                <TextField
+                  handleBlur={handleBlur}
+                  error={errors.deadline!}
+                  touched={touched.deadline!}
+                  value={values.deadline}
+                  name="deadline"
+                  placeholder=""
+                  handleChange={handleChange}
+                  label="Deadline"
+                  type="datetime-local"
                 />
               </FormGroup>
             </div>

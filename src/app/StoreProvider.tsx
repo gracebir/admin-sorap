@@ -7,14 +7,14 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function StoreProvider({
-    children,
+  children,
 }: {
-    children: React.ReactNode;
+  children: React.ReactNode;
 }) {
-    return (
-        <Provider store={store}>
-            {children}
-            <ToastContainer />
-        </Provider>
-    );
+  return (
+    <Provider store={store}>
+      {children}
+      <ToastContainer />
+    </Provider>
+  );
 }

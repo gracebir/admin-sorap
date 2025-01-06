@@ -4,20 +4,42 @@ import { createSlice } from "@reduxjs/toolkit";
 import { apiSlice } from "../apiSlice";
 import { AuthState, SigninType } from "@/type";
 
+const TOKEN_NAME = "auth-admin-srct-token";
+
+const saveTokenToLocalStorage = (token: string) => {
+  if (typeof window !== undefined) {
+    localStorage.setItem(TOKEN_NAME, token);
+  }
+};
+
+const removeTokenFromLocalStorage = () => {
+  localStorage.removeItem(TOKEN_NAME);
+};
+
+const getInitialToken = () => {
+  if (typeof window !== "undefined") {
+    return localStorage.getItem(TOKEN_NAME);
+  }
+  return null;
+};
+
 const initialState: AuthState = {
   user: null,
   role: null,
+  token: getInitialToken(),
 };
 
 const authApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    signin: builder.mutation<{ status: string; message: string }, SigninType>({
+    signin: builder.mutation<
+      { status: string; message: string; data: { access_token: string } },
+      SigninType
+    >({
       query: (values) => {
         return {
           url: "/auth/admin/signin",
           method: "POST",
           body: values,
-          credentials: "include",
         };
       },
     }),
@@ -34,7 +56,6 @@ const authApi = apiSlice.injectEndpoints({
         return {
           url: "/user/profile",
           method: "GET",
-          credentials: "include",
         };
       },
     }),
@@ -48,6 +69,16 @@ const authSlice = createSlice({
     setUser: (state, { payload }) => {
       state.user = payload;
     },
+    setToken: (state, { payload }) => {
+      state.token = payload;
+      saveTokenToLocalStorage(payload);
+    },
+    logout: (state) => {
+      state.user = null;
+      state.token = null;
+      state.role = null;
+      removeTokenFromLocalStorage();
+    },
     setRole: (state, { payload }) => {
       state.role = payload;
     },
@@ -56,6 +87,6 @@ const authSlice = createSlice({
 
 export const { useSigninMutation, useGetMeQuery, useSignOutMutation } = authApi;
 
-export const { setRole, setUser } = authSlice.actions;
+export const { setRole, setUser, setToken, logout } = authSlice.actions;
 
 export default authSlice;

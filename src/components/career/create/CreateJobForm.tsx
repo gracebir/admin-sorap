@@ -10,6 +10,7 @@ import PageTitle from "@/components/common/PageTitle";
 import { useCreateJobMutation } from "@/lib/features/slice/career/careerSlice";
 import {
   departmentsOptions,
+  jobLevelsOptions,
   jobTypesOptions,
   teamsOptions,
 } from "@/utils/constasts";
@@ -77,7 +78,7 @@ const CreateJobForm = () => {
           </div>
           <div className="px-6 py-5 flex flex-col gap-4">
             <div className="flex flex-col gap-4">
-              <FormGroup variant="col-2">
+              <FormGroup variant="col-1">
                 <TextField
                   handleBlur={handleBlur}
                   error={errors.title!}
@@ -86,9 +87,12 @@ const CreateJobForm = () => {
                   name="title"
                   placeholder="e.g. New JavaScript pipeline operator"
                   handleChange={handleChange}
-                  label="Titre du blog"
+                  label="Titre du Job"
                   type="text"
                 />
+              </FormGroup>
+
+              <FormGroup variant="col-2">
                 <SelectInput
                   onChange={handleChange}
                   onBlur={handleBlur}
@@ -98,6 +102,55 @@ const CreateJobForm = () => {
                   value={values.jobType}
                   options={jobTypesOptions}
                   label="Categorie du Job"
+                />
+                <SelectInput
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  name="experienceLevel"
+                  touched={touched.experienceLevel!}
+                  error={errors.experienceLevel!}
+                  value={values.experienceLevel}
+                  options={jobLevelsOptions}
+                  label="Niveau Experience"
+                />
+              </FormGroup>
+
+              <FormGroup variant="col-1">
+                <TextField
+                  handleBlur={handleBlur}
+                  error={errors.salaryRange!}
+                  touched={touched.salaryRange!}
+                  value={values.salaryRange}
+                  name="salaryRange"
+                  placeholder="e.g. $2000 - $3000"
+                  handleChange={handleChange}
+                  label="Salaire"
+                  type="text"
+                />
+              </FormGroup>
+
+              <FormGroup variant="col-2">
+                <TextField
+                  handleBlur={handleBlur}
+                  error={errors.company!}
+                  touched={touched.company!}
+                  value={values.company}
+                  name="company"
+                  placeholder="e.g. Google"
+                  handleChange={handleChange}
+                  label="Company"
+                  type="text"
+                />
+                <TextField
+                  handleBlur={handleBlur}
+                  error={errors.location!}
+                  touched={touched.location!}
+                  value={values.location}
+                  name="location"
+                  placeholder="e.g. Kigali, Rwanda or Remote"
+                  handleChange={handleChange}
+                  label="Location"
+                  type="text"
                 />
               </FormGroup>
 
@@ -169,6 +222,19 @@ const CreateJobForm = () => {
                   handleValue={(value) => {
                     setFieldValue("benefits", value);
                   }}
+                />
+              </FormGroup>
+              <FormGroup variant="col-1">
+                <TextField
+                  handleBlur={handleBlur}
+                  error={errors.deadline!}
+                  touched={touched.deadline!}
+                  value={values.deadline}
+                  name="deadline"
+                  placeholder=""
+                  handleChange={handleChange}
+                  label="Deadline"
+                  type="datetime-local"
                 />
               </FormGroup>
             </div>

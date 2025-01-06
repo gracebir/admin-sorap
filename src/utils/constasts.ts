@@ -187,3 +187,22 @@ export const CategoryProgramOptions = [
   { value: "NETWORK", label: "IT Reseaux" },
   { value: "DATAANALYSIS", label: "Data Analysis" },
 ];
+
+export const jobLevelsOptions = [
+  {
+    value: "ENTRY_LEVEL",
+    label: "ENTRY LEVEL",
+  },
+  {
+    value: "JUNIOR",
+    label: "JUNIOR",
+  },
+  {
+    value: "MID_LEVEL",
+    label: "MID LEVEL",
+  },
+  {
+    value: "SENIOR",
+    label: "SENIOR",
+  },
+];
