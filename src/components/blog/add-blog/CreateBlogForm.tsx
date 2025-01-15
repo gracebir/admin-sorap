@@ -10,6 +10,7 @@ import PageTitle from "@/components/common/PageTitle";
 import { useCreateBlogMutation } from "@/lib/features/slice/blog/blogSlice";
 import { blogsOptions } from "@/utils/constasts";
 import { useFormik } from "formik";
+import Image from "next/image";
 import React, { useState } from "react";
 import { MdOutlineFileDownload } from "react-icons/md";
 import { toast } from "react-toastify";
@@ -19,6 +20,8 @@ const CreateBlogForm = () => {
   const [hovered, setHovered] = useState<boolean>(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [createBlog, { isLoading, error, isError }] = useCreateBlogMutation();
+
+  console.log(error);
 
   const [content, setContent] = useState<string>("");
 
@@ -60,7 +63,7 @@ const CreateBlogForm = () => {
             toast.success(response?.message);
           }
         } catch (error) {
-          toast.error("Oops un erreur se produit");
+          console.log(error);
         } finally {
           resetForm();
           setContent("");
@@ -115,8 +118,8 @@ const CreateBlogForm = () => {
               </FormGroup>
             </div>
             {isError && (
-              //@ts-ignore
-              <ErrorMessage text={error?.data?.error_message} />
+              //@ts-expect-error Error data structure is not typed properly in the API response
+              <ErrorMessage text={error.data.error_message} />
             )}
             <div className="flex justify-end">
               <Button type="submit" text="Creer" isLoading={isLoading} />
@@ -136,8 +139,10 @@ const CreateBlogForm = () => {
                     onMouseEnter={() => setHovered(true)}
                     onMouseLeave={() => setHovered(false)}
                   >
-                    <img
+                    <Image
                       src={thumbnail}
+                      width={400}
+                      height={400}
                       alt="event-thumbnail"
                       className="w-full h-full object-contain rounded-md"
                     />
