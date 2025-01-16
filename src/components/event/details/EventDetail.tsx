@@ -4,9 +4,9 @@
 
 import { formatDateTimeToFrench } from "@/helper/funct";
 import {
-  useGetEventByIdQuery,
-  useLaunchEventMutation,
-  useUpdateEventThumbnailMutation,
+    useGetEventByIdQuery,
+    useLaunchEventMutation,
+    useUpdateEventThumbnailMutation,
 } from "@/lib/features/slice/event/eventSlice";
 import { Pen } from "lucide-react";
 import Image from "next/image";
@@ -24,286 +24,319 @@ import DefaultButton from "@/components/common/buttons/DefaultButton";
 import { HiMiniLanguage } from "react-icons/hi2";
 
 const DetailEvent: React.FC<{ id: number }> = ({ id }) => {
-  const { data, isLoading } = useGetEventByIdQuery({ id });
+    const { data, isLoading } = useGetEventByIdQuery({ id });
 
-  const [updateThumbnail, { isLoading: loading }] =
-    useUpdateEventThumbnailMutation();
-  const [thumbnail, setThumbnail] = useState<string | null>(null);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const eventData = data?.data;
 
-  const [modalIsOpen, setIsOpen] = React.useState(false);
-  const [modalOpenSponsor, setModalOpenSponsor] = useState(false);
-  const [launchEvent, { isLoading: loadingEventLaunch }] =
-    useLaunchEventMutation();
+    const [updateThumbnail, { isLoading: loading }] =
+        useUpdateEventThumbnailMutation();
+    const [thumbnail, setThumbnail] = useState<string | null>(null);
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
-  const openModal = () => {
-    setIsOpen(true);
-  };
-  const handleLaunchEvent = async () => {
-    try {
-      const response = await launchEvent({ id: data?.data.id! }).unwrap();
-      if (response) {
-        toast.success("Evenement vient etre lancer");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    const [modalIsOpen, setIsOpen] = React.useState(false);
+    const [modalOpenSponsor, setModalOpenSponsor] = useState(false);
+    const [launchEvent, { isLoading: loadingEventLaunch }] =
+        useLaunchEventMutation();
 
-  const MAX_SIZE = 2 * 1024 * 1024;
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      if (file.size > MAX_SIZE) {
-        alert("File size exceeds 2MB");
-        return;
-      }
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setThumbnail(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+    const openModal = () => {
+        setIsOpen(true);
+    };
+    const handleLaunchEvent = async () => {
+        if (data?.data.id) {
+            try {
+                const response = await launchEvent({
+                    id: data?.data.id,
+                }).unwrap();
+                if (response) {
+                    toast.success("Evenement vient etre lancer");
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    };
 
-      setSelectedFile(file);
-    }
-  };
+    const MAX_SIZE = 2 * 1024 * 1024;
+    const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (file) {
+            if (file.size > MAX_SIZE) {
+                alert("File size exceeds 2MB");
+                return;
+            }
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setThumbnail(reader.result as string);
+            };
+            reader.readAsDataURL(file);
 
-  const handleThumbnailUpdate = async () => {
-    try {
-      const response = await updateThumbnail({
-        id: id!,
-        event: {
-          thumbnail: selectedFile,
-        },
-      }).unwrap();
-      if (response) {
-        toast.success(response.message);
-        setTimeout(() => {
-          setThumbnail(null);
-          setSelectedFile(null);
-        }, 1500);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  if (isLoading)
-    return (
-      <div className="min-h-[70svh] flex justify-center items-center">
-        <span className="loading loading-spinner loading-lg"></span>
-      </div>
-    );
-  return (
-    <div className="flex flex-col gap-8">
-      <div className="flex flex-col gap-3">
-        <div className="relative h-[25rem] w-full max-w-sm overflow-hidden group">
-          <Image
-            src={thumbnail ? thumbnail : data?.data.thumbnail!}
-            priority
-            width={400}
-            height={400}
-            className="w-full h-full object-contain"
-            alt="thumbnail"
-          />
-          <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <label
-              htmlFor="thumbnail"
-              className="p-3 bg-white rounded-full cursor-pointer text-gray-800 hover:bg-gray-200 transition-colors duration-300"
-              aria-label="Edit image"
-            >
-              <Pen className="w-6 h-6" />
-              <input
-                type="file"
-                id="thumbnail"
-                accept="image/png, image/jpeg, image/jpg"
-                className="hidden"
-                onChange={handleImageUpload}
-              />
-            </label>
-          </div>
-        </div>
-        {thumbnail && (
-          <div className="flex items-center gap-4">
-            <DefaultButton
-              type="button"
-              variant="cancel"
-              text="Annuler"
-              onClick={() => {
+            setSelectedFile(file);
+        }
+    };
+
+    const handleThumbnailUpdate = async () => {
+        try {
+            const response = await updateThumbnail({
+                id: id!,
+                event: {
+                    thumbnail: selectedFile,
+                },
+            }).unwrap();
+            if (response) {
+                toast.success(response.message);
                 setTimeout(() => {
-                  setThumbnail(null);
-                  setSelectedFile(null);
+                    setThumbnail(null);
+                    setSelectedFile(null);
                 }, 1500);
-              }}
-            />
-            <DefaultButton
-              isLoading={loading}
-              onClick={handleThumbnailUpdate}
-              type="button"
-              variant="primary"
-              text="Sauvergader"
-            />
-          </div>
-        )}
-      </div>
-      <div className="flex justify-between items-center">
-        <Link
-          className="flex text-blue-500 hover:underline gap-1"
-          href={"/admin/events"}
-        >
-          <IoIosArrowRoundBack size={20} />
-          <span className="text-sm font-semibold">
-            Retour à tous les événements
-          </span>
-        </Link>
-        <Link
-          className="flex px-6 py-3 duration-300 items-center rounded-md bg-blue-600 text-white hover:bg-primary gap-1"
-          href={`/admin/events/create-event/translate/${id}`}
-        >
-          <HiMiniLanguage size={20} />
-          <span className="text-sm font-semibold">Traduire</span>
-        </Link>
-      </div>
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    if (isLoading)
+        return (
+            <div className='min-h-[70svh] flex justify-center items-center'>
+                <span className='loading loading-spinner loading-lg'></span>
+            </div>
+        );
 
-      <div className="grid grid-cols-1 lg:grid-cols-6 gap-8">
-        <div className=" lg:col-span-4 col-span-1 flex flex-col gap-6">
-          <div className="bg-blue-100 rounded-md p-4 flex flex-col gap-3 items-start">
-            <span className="px-3 py-1 bg-blue-300 text-xs font-semibold text-gray-600 rounded-xl">
-              {data?.data.eventType}
-            </span>
-            <h1 className="font-extrabold text-2xl lg:text-3xl text-primary">
-              {data?.data.EventTranslation[0].theme}
-            </h1>
-          </div>
-          <div>
-            <h3 className="text-lg lg:text-xl font-semibold my-4">
-              Description
-            </h3>
-            <p className="text-sm">
-              {data?.data.EventTranslation[0].description}
-            </p>
-            <Link
-              className="text-blue-500 underline text-sm font-semibold"
-              href={`/admin/events/edit/translate/${data?.data.EventTranslation[0].id}`}
-            >
-              modifier la traduiction
-            </Link>
-          </div>
-          {data?.data.EventTranslation.length === 2 && (
-            <>
-              <h1 className="text-blue-600 text-xl font-semibold">
-                Traduction en Anglais
-              </h1>
-              <div>
-                <h1 className="text-xl md:text-2xl font-bold text-primary">
-                  {data?.data.EventTranslation[1].theme}
-                </h1>
-
-                <div>
-                  <h3 className="text-lg lg:text-xl font-semibold my-4">
-                    Description
-                  </h3>
-                  <p className="text-sm">
-                    {data?.data.EventTranslation[1].description}
-                  </p>
-                  <Link
-                    className="text-blue-500 underline text-sm font-semibold"
-                    href={`/admin/events/edit/translate/${data?.data.EventTranslation[1].id}`}
-                  >
-                    Update translation
-                  </Link>
+    if (!eventData) {
+        return (
+            <div className='min-h-[70svh] flex justify-center items-center'>
+                <p>No event data available</p>
+            </div>
+        );
+    }
+    return (
+        <div className='flex flex-col gap-8'>
+            <div className='flex flex-col gap-3'>
+                <div className='relative h-[25rem] w-full max-w-sm overflow-hidden group'>
+                    <Image
+                        src={thumbnail || eventData.thumbnail}
+                        priority
+                        width={400}
+                        height={400}
+                        className='w-full h-full object-contain'
+                        alt='thumbnail'
+                    />
+                    <div className='absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300'>
+                        <label
+                            htmlFor='thumbnail'
+                            className='p-3 bg-white rounded-full cursor-pointer text-gray-800 hover:bg-gray-200 transition-colors duration-300'
+                            aria-label='Edit image'
+                        >
+                            <Pen className='w-6 h-6' />
+                            <input
+                                type='file'
+                                id='thumbnail'
+                                accept='image/png, image/jpeg, image/jpg'
+                                className='hidden'
+                                onChange={handleImageUpload}
+                            />
+                        </label>
+                    </div>
                 </div>
-              </div>
-            </>
-          )}
-        </div>
-        <div className="lg:col-span-2 col-span-1">
-          <div className="w-full shadow-sm rounded-md p-4 flex flex-col gap-6 lg:p-6 border border-blue-100">
-            <div className="flex flex-col gap-2">
-              <div className="flex flex-row items-center gap-2">
-                <IoCalendarNumberOutline className="text-blue-400" size={20} />
-                <span className="text-sm font-semibold">Date & heure</span>
-              </div>
-              <div>
-                <p className="text-sm font-medium">
-                  {formatDateTimeToFrench(data?.data.start_date!)}
-                </p>
-                <span className="text-base font-medium">( GMT+2 )</span>
-              </div>
-              <div className="flex flex-col gap-2">
-                <div className="flex flex-row items-start gap-2">
-                  <IoLocationSharp className="text-blue-400" size={20} />
-                  <span className="text-sm font-semibold">Localisation</span>
-                </div>
-                <span className="text-sm font-medium">
-                  {data?.data?.location}
-                </span>
-              </div>
+                {thumbnail && (
+                    <div className='flex items-center gap-4'>
+                        <DefaultButton
+                            type='button'
+                            variant='cancel'
+                            text='Annuler'
+                            onClick={() => {
+                                setTimeout(() => {
+                                    setThumbnail(null);
+                                    setSelectedFile(null);
+                                }, 1500);
+                            }}
+                        />
+                        <DefaultButton
+                            isLoading={loading}
+                            onClick={handleThumbnailUpdate}
+                            type='button'
+                            variant='primary'
+                            text='Sauvergader'
+                        />
+                    </div>
+                )}
+            </div>
+            <div className='flex justify-between items-center'>
+                <Link
+                    className='flex text-blue-500 hover:underline gap-1'
+                    href={"/admin/events"}
+                >
+                    <IoIosArrowRoundBack size={20} />
+                    <span className='text-sm font-semibold'>
+                        Retour à tous les événements
+                    </span>
+                </Link>
+                <Link
+                    className='flex px-6 py-3 duration-300 items-center rounded-md bg-blue-600 text-white hover:bg-primary gap-1'
+                    href={`/admin/events/create-event/translate/${id}`}
+                >
+                    <HiMiniLanguage size={20} />
+                    <span className='text-sm font-semibold'>Traduire</span>
+                </Link>
             </div>
 
-            <button
-              type="button"
-              onClick={handleLaunchEvent}
-              className="px-6 py-3 bg-blue-400 w-full text-sm text-gray-50 rounded-md font-medium hover:bg-blue-900"
-            >
-              {loadingEventLaunch ? (
-                <span className="loading loading-spinner loading-sm"></span>
-              ) : !data?.data.isPublished ? (
-                "Lancer l'événement 🚀"
-              ) : (
-                "Deactiver 😐"
-              )}
-            </button>
-          </div>
-          <div className="p-2">
-            <button
-              onClick={openModal}
-              className="px-6 py-3 bg-primary w-full text-sm text-gray-50 rounded-md font-medium hover:bg-blue-900"
-            >
-              Ajouter Moderateur
-            </button>
-          </div>
-          <div className="p-2">
-            <p className="text-sm italic font-medium">
-              Voulez vous ajouter un sponsor?{" "}
-              <button
-                type="button"
-                onClick={() => setModalOpenSponsor(true)}
-                className="text-blue-500 underline"
-              >
-                ajouter
-              </button>
-            </p>
-          </div>
+            <div className='grid grid-cols-1 lg:grid-cols-6 gap-8'>
+                <div className=' lg:col-span-4 col-span-1 flex flex-col gap-6'>
+                    <div className='bg-blue-100 rounded-md p-4 flex flex-col gap-3 items-start'>
+                        <span className='px-3 py-1 bg-blue-300 text-xs font-semibold text-gray-600 rounded-xl'>
+                            {eventData.eventType}
+                        </span>
+                        <h1 className='font-extrabold text-2xl lg:text-3xl text-primary'>
+                            {eventData.EventTranslation?.[0]?.theme ||
+                                "No theme available"}
+                        </h1>
+                    </div>
+                    <div>
+                        <h3 className='text-lg lg:text-xl font-semibold my-4'>
+                            Description
+                        </h3>
+                        <p className='text-sm'>
+                            {eventData.EventTranslation?.[0]?.theme ||
+                                "No theme available"}
+                        </p>
+                        <Link
+                            className='text-blue-500 underline text-sm font-semibold'
+                            href={`/admin/events/edit/translate/${data?.data.EventTranslation[0].id}`}
+                        >
+                            modifier la traduiction
+                        </Link>
+                    </div>
+                    {data?.data.EventTranslation.length === 2 && (
+                        <>
+                            <h1 className='text-blue-600 text-xl font-semibold'>
+                                Traduction en Anglais
+                            </h1>
+                            <div>
+                                <h1 className='text-xl md:text-2xl font-bold text-primary'>
+                                    {data?.data.EventTranslation[1].theme}
+                                </h1>
+
+                                <div>
+                                    <h3 className='text-lg lg:text-xl font-semibold my-4'>
+                                        Description
+                                    </h3>
+                                    <p className='text-sm'>
+                                        {
+                                            data?.data.EventTranslation[1]
+                                                .description
+                                        }
+                                    </p>
+                                    <Link
+                                        className='text-blue-500 underline text-sm font-semibold'
+                                        href={`/admin/events/edit/translate/${data?.data.EventTranslation[1].id}`}
+                                    >
+                                        Update translation
+                                    </Link>
+                                </div>
+                            </div>
+                        </>
+                    )}
+                </div>
+                <div className='lg:col-span-2 col-span-1'>
+                    <div className='w-full shadow-sm rounded-md p-4 flex flex-col gap-6 lg:p-6 border border-blue-100'>
+                        <div className='flex flex-col gap-2'>
+                            <div className='flex flex-row items-center gap-2'>
+                                <IoCalendarNumberOutline
+                                    className='text-blue-400'
+                                    size={20}
+                                />
+                                <span className='text-sm font-semibold'>
+                                    Date & heure
+                                </span>
+                            </div>
+                            <div>
+                                <p className='text-sm font-medium'>
+                                    {formatDateTimeToFrench(
+                                        eventData.start_date
+                                    )}
+                                </p>
+                                <span className='text-base font-medium'>
+                                    ( GMT+2 )
+                                </span>
+                            </div>
+                            <div className='flex flex-col gap-2'>
+                                <div className='flex flex-row items-start gap-2'>
+                                    <IoLocationSharp
+                                        className='text-blue-400'
+                                        size={20}
+                                    />
+                                    <span className='text-sm font-semibold'>
+                                        Localisation
+                                    </span>
+                                </div>
+                                <span className='text-sm font-medium'>
+                                    {eventData.location}
+                                </span>
+                            </div>
+                        </div>
+
+                        <button
+                            type='button'
+                            onClick={handleLaunchEvent}
+                            className='px-6 py-3 bg-blue-400 w-full text-sm text-gray-50 rounded-md font-medium hover:bg-blue-900'
+                        >
+                            {loadingEventLaunch ? (
+                                <span className='loading loading-spinner loading-sm'></span>
+                            ) : eventData.isPublished ? (
+                                "Lancer l'événement 🚀"
+                            ) : (
+                                "Deactiver 😐"
+                            )}
+                        </button>
+                    </div>
+                    <div className='p-2'>
+                        <button
+                            onClick={openModal}
+                            className='px-6 py-3 bg-primary w-full text-sm text-gray-50 rounded-md font-medium hover:bg-blue-900'
+                        >
+                            Ajouter Moderateur
+                        </button>
+                    </div>
+                    <div className='p-2'>
+                        <p className='text-sm italic font-medium'>
+                            Voulez vous ajouter un sponsor?&apos;
+                            <button
+                                type='button'
+                                onClick={() => setModalOpenSponsor(true)}
+                                className='text-blue-500 underline'
+                            >
+                                ajouter
+                            </button>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {data?.data?.moderators?.length !== 0 && (
+                <div className='flex flex-col gap-4'>
+                    <h3 className='font-semibold text-primary'>
+                        Les Moderateurs de l&lsquo;evenement 🎤&apos;
+                    </h3>
+                    <ModeratorData moderators={eventData.moderators} />
+                </div>
+            )}
+            {data?.data?.EventSponsor.length !== 0 && (
+                <div className='flex flex-col gap-4'>
+                    <h3 className='font-semibold text-primary'>
+                        Sponsor de l&lsquo;evenement 💸&apos;
+                    </h3>
+                    <SponsorData eventSponsors={eventData.EventSponsor} />
+                </div>
+            )}
+            <ModeratorModal
+                eventId={eventData.id}
+                modalIsOpen={modalIsOpen}
+                setIsOpen={setIsOpen}
+            />
+            <AddSponsor
+                eventId={id}
+                modalIsOpen={modalOpenSponsor}
+                setModelIsOpen={setModalOpenSponsor}
+            />
         </div>
-      </div>
-      {data?.data?.moderators?.length! !== 0 && (
-        <div className="flex flex-col gap-4">
-          <h3 className="font-semibold text-primary">
-            Les Moderateurs de l'evenement 🎤{" "}
-          </h3>
-          <ModeratorData moderators={data?.data?.moderators!} />
-        </div>
-      )}
-      {data?.data?.EventSponsor.length !== 0 && (
-        <div className="flex flex-col gap-4">
-          <h3 className="font-semibold text-primary">
-            Sponsor de l'evenement 💸{" "}
-          </h3>
-          <SponsorData eventSponsors={data?.data.EventSponsor!} />
-        </div>
-      )}
-      <ModeratorModal
-        eventId={data?.data.id!}
-        modalIsOpen={modalIsOpen}
-        setIsOpen={setIsOpen}
-      />
-      <AddSponsor
-        eventId={id}
-        modalIsOpen={modalOpenSponsor}
-        setModelIsOpen={setModalOpenSponsor}
-      />
-    </div>
-  );
+    );
 };
 
 export default DetailEvent;

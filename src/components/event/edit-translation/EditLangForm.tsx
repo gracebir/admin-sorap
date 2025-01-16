@@ -15,7 +15,7 @@ import React, { useEffect } from "react";
 import { toast } from "react-toastify";
 
 const EditLangForm: React.FC<{ id: number }> = ({ id }) => {
-    const [updateTranslation, { isLoading, isError, error }] =
+    const [updateTranslation, { isLoading, isError, error: transError }] =
         useUpdateTranslationMutation();
 
     const { data, isLoading: loading } = useGetEventTranslatedByIdQuery({ id });
@@ -43,6 +43,7 @@ const EditLangForm: React.FC<{ id: number }> = ({ id }) => {
                     toast.success(response.message);
                 }
             } catch (error) {
+                console.log(error);
                 toast.error("Un erreur se produit");
             }
         },
@@ -68,7 +69,7 @@ const EditLangForm: React.FC<{ id: number }> = ({ id }) => {
         <div className='flex flex-col gap-6'>
             <div className='flex justify-between'>
                 <h3 className='text-xl md:text-2xl font-bold text-primary'>
-                    Modifier la traduction en{" "}
+                    Modifier la traduction en &lsquo;
                     {data?.data.language === "fr" ? "Francais" : "Anglais"}
                 </h3>
                 <Link
@@ -85,7 +86,7 @@ const EditLangForm: React.FC<{ id: number }> = ({ id }) => {
                 <div className='lg:col-span-3 md:col-span-3  order-2 md:order-2 lg:order-1 shadow-md flex flex-col border-gray-200 border rounded-md'>
                     <div className='px-6 py-2 border-b border-gray-300'>
                         <h3 className='text-sm lg:text-base font-semibold'>
-                            Infomation sur l'evenement
+                            Information sur l&apos;evenement
                         </h3>
                     </div>
                     <div className='px-6 py-5 flex flex-col gap-4'>
@@ -118,8 +119,10 @@ const EditLangForm: React.FC<{ id: number }> = ({ id }) => {
                             </FormGroup>
                         </div>
                         {isError && (
-                            //@ts-ignore
-                            <ErrorMessage text={error?.data?.error_message} />
+                            //@ts-expect-error data structure error from the code
+                            <ErrorMessage
+                                text={transError?.data?.error_message}
+                            />
                         )}
                         <div className='flex justify-end'>
                             <Button

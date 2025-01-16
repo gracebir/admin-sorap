@@ -17,13 +17,14 @@ import { eventOptions, LocationOptions } from "@/utils/constasts";
 import { useFormik } from "formik";
 import { MdOutlineFileDownload } from "react-icons/md";
 import { toast } from "react-toastify";
+import Image from "next/image";
 
 const FormEdit: React.FC<{ id: number }> = ({ id }) => {
     const [hovered, setHovered] = useState<boolean>(false);
     const { data: event, isLoading: loadingEvent } = useGetEventByIdQuery({
         id,
     });
-    const [updateEvent, { isLoading, error, isError }] =
+    const [updateEvent, { isLoading, error: errorEvent, isError }] =
         useUpdateEventMutation();
 
     const {
@@ -58,6 +59,7 @@ const FormEdit: React.FC<{ id: number }> = ({ id }) => {
                     toast.success(response?.message);
                 }
             } catch (error) {
+                console.log(error);
                 toast.error("Oops un erreur se produit");
             }
         },
@@ -65,18 +67,17 @@ const FormEdit: React.FC<{ id: number }> = ({ id }) => {
 
     useEffect(() => {
         if (!loadingEvent) {
-            const formatDate = (dateString: string) => {
+            const formatDate = (dateString?: string) => {
                 if (!dateString) return "";
                 const date = new Date(dateString);
-                const formattedDate = date.toISOString().slice(0, 16); // Get YYYY-MM-DDTHH:MM format
-                return formattedDate;
+                return date.toISOString().slice(0, 16); // Get YYYY-MM-DDTHH:MM format
             };
             setValues({
                 theme: event?.data?.theme || "",
                 location: event?.data?.location || "",
                 description: event?.data?.description || "",
-                start_date: formatDate(event?.data?.start_date!),
-                end_date: formatDate(event?.data?.end_date!),
+                start_date: formatDate(event?.data?.start_date),
+                end_date: formatDate(event?.data?.end_date),
                 price: event?.data?.price || 0,
                 eventType: event?.data?.eventType || "",
             });
@@ -100,7 +101,7 @@ const FormEdit: React.FC<{ id: number }> = ({ id }) => {
                 <div className='lg:col-span-3 md:col-span-3  order-2 md:order-2 lg:order-1 shadow-md flex flex-col border-gray-200 border rounded-md'>
                     <div className='px-6 py-2 border-b border-gray-300'>
                         <h3 className='text-sm lg:text-base font-semibold'>
-                            Infomation sur l'evenement
+                            Information sur l&apos;evenement
                         </h3>
                     </div>
                     <div className='px-6 py-5 flex flex-col gap-4'>
@@ -189,8 +190,10 @@ const FormEdit: React.FC<{ id: number }> = ({ id }) => {
                             </FormGroup>
                         </div>
                         {isError && (
-                            //@ts-ignore
-                            <ErrorMessage text={error?.data?.error_message} />
+                            //@ts-expect-error data structure error from data
+                            <ErrorMessage
+                                text={errorEvent?.data?.error_message}
+                            />
                         )}
                         <div className='flex justify-end'>
                             <Button
@@ -216,7 +219,9 @@ const FormEdit: React.FC<{ id: number }> = ({ id }) => {
                                         onMouseEnter={() => setHovered(true)}
                                         onMouseLeave={() => setHovered(false)}
                                     >
-                                        <img
+                                        <Image
+                                            width={300}
+                                            height={300}
                                             src={event?.data?.thumbnail}
                                             alt='event-thumbnail'
                                             className='w-full h-full object-contain rounded-md'

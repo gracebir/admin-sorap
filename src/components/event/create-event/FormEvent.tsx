@@ -10,6 +10,7 @@ import PageTitle from "@/components/common/PageTitle";
 import { useCreateEventMutation } from "@/lib/features/slice/event/eventSlice";
 import { eventOptions, LocationOptions } from "@/utils/constasts";
 import { useFormik } from "formik";
+import Image from "next/image";
 import React, { useState } from "react";
 import { MdOutlineFileDownload } from "react-icons/md";
 import { toast } from "react-toastify";
@@ -18,7 +19,7 @@ const FormEvent = () => {
     const [thumbnail, setThumbnail] = useState<string | null>(null);
     const [hovered, setHovered] = useState<boolean>(false);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
-    const [createEvent, { isLoading, error, isError }] =
+    const [createEvent, { isLoading, error: errorEvent, isError }] =
         useCreateEventMutation();
 
     const MAX_SIZE = 2 * 1024 * 1024; // 2MB
@@ -63,6 +64,7 @@ const FormEvent = () => {
                         toast.success(response?.message);
                     }
                 } catch (error) {
+                    console.log(error);
                     toast.error("Oops un erreur se produit");
                 } finally {
                     resetForm();
@@ -79,7 +81,7 @@ const FormEvent = () => {
                 <div className='lg:col-span-3 md:col-span-3  order-2 md:order-2 lg:order-1 shadow-md flex flex-col border-gray-200 border rounded-md'>
                     <div className='px-6 py-2 border-b border-gray-300'>
                         <h3 className='text-sm lg:text-base font-semibold'>
-                            Infomation sur l'evenement
+                            Information sur l&apos;evenement
                         </h3>
                     </div>
                     <div className='px-6 py-5 flex flex-col gap-4'>
@@ -167,9 +169,11 @@ const FormEvent = () => {
                                 />
                             </FormGroup>
                         </div>
-                        {isError && (
-                            //@ts-ignore
-                            <ErrorMessage text={error?.data?.error_message} />
+                        {isError && errorEvent && (
+                            //@ts-expect-error data strurcute error is comming form the data
+                            <ErrorMessage
+                                text={errorEvent?.data?.error_message}
+                            />
                         )}
                         <div className='flex justify-end'>
                             <Button
@@ -195,8 +199,10 @@ const FormEvent = () => {
                                         onMouseEnter={() => setHovered(true)}
                                         onMouseLeave={() => setHovered(false)}
                                     >
-                                        <img
+                                        <Image
                                             src={thumbnail}
+                                            width={300}
+                                            height={300}
                                             alt='event-thumbnail'
                                             className='w-full h-full object-contain rounded-md'
                                         />

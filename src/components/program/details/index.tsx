@@ -61,8 +61,12 @@ const DetailProgram: React.FC<{ id: number }> = ({ id }) => {
   const handleThumbnailUpdate = async () => {
     try {
       const id = data?.data?.id;
+
+      if (!id) {
+        throw new Error("Program ID is undefined.");
+      }
       const response = await updateThumbnail({
-        id: id!,
+        id: id,
         thumbnail: selectedFile,
       }).unwrap();
       if (response) {
@@ -83,18 +87,24 @@ const DetailProgram: React.FC<{ id: number }> = ({ id }) => {
         <span className="loading loading-spinner loading-lg"></span>
       </div>
     );
+  const formattedDate = data?.data?.date_from
+    ? formatDateTimeToFrench(data.data.date_from)
+    : "Date not available";
   return (
     <div className="flex flex-col gap-8">
       <div className="flex flex-col gap-3">
         <div className="relative h-[25rem] w-full max-w-sm overflow-hidden group">
-          <Image
-            src={thumbnail ? thumbnail : data?.data.thumbnail!}
-            priority
-            width={400}
-            height={400}
-            className="w-full h-full object-contain"
-            alt="thumbnail"
-          />
+          {data?.data.thumbnail && (
+            <Image
+              src={thumbnail ? thumbnail : data?.data.thumbnail}
+              priority
+              width={400}
+              height={400}
+              className="w-full h-full object-contain"
+              alt="thumbnail"
+            />
+          )}
+
           <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <label
               htmlFor="thumbnail"
@@ -214,9 +224,7 @@ const DetailProgram: React.FC<{ id: number }> = ({ id }) => {
                 <span className="text-sm font-semibold">Date & heure</span>
               </div>
               <div>
-                <p className="text-sm font-medium">
-                  {formatDateTimeToFrench(data?.data.date_from!)}
-                </p>
+                <p className="text-sm font-medium">{formattedDate}</p>
                 <span className="text-base font-medium">( GMT+2 )</span>
               </div>
             </div>

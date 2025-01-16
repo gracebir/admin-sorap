@@ -10,7 +10,7 @@ import { signinSchema } from "@/utils/validations/siginSchema";
 import { useFormik } from "formik";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-import { useEffect, useLayoutEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/lib/store";
 
@@ -88,7 +88,7 @@ export default function LoginForm() {
             )}
           </button>
           {isError && (
-            //@ts-ignore
+            //@ts-expect-error error is due to data structure
             <ErrorMessage text={error?.data?.error_message} />
           )}
         </form>
