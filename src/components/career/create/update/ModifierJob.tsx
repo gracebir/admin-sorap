@@ -17,7 +17,7 @@ import {
   jobTypesOptions,
   teamsOptions,
 } from "@/utils/constasts";
-import { Form, useFormik } from "formik";
+import { useFormik } from "formik";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { IoMdArrowBack } from "react-icons/io";
@@ -77,12 +77,12 @@ const ModifierJob: React.FC<{ id: number }> = ({ id }) => {
 
   useEffect(() => {
     if (loading || data?.data) {
-      const formatDate = (dateString: string) => {
-        if (!dateString) return "";
+      const formatDate = (dateString: string | undefined) => {
+        if (!dateString) return ""; // Safely handle undefined
         const date = new Date(dateString);
-        const formattedDate = date.toISOString().slice(0, 16); // Get YYYY-MM-DDTHH:MM format
-        return formattedDate;
+        return date.toISOString().slice(0, 16); // Get YYYY-MM-DDTHH:MM format
       };
+
       setValues({
         title: data?.data.title || "",
         salaryRange: data?.data.salaryRange || "",
@@ -90,9 +90,11 @@ const ModifierJob: React.FC<{ id: number }> = ({ id }) => {
         jobType: data?.data.jobType || "",
         company: data?.data.company || "",
         experienceLevel: data?.data.experienceLevel || "",
-        deadline: formatDate(data?.data.deadline!) || "",
-        teamId: data?.data.teamId!.toString() || "",
-        departmentId: data?.data.departmentId!.toString() || "",
+        deadline: formatDate(data?.data.deadline), // No non-null assertion
+        teamId: data?.data.teamId ? data?.data.teamId.toString() : "", // Safely handle undefined
+        departmentId: data?.data.departmentId
+          ? data?.data.departmentId.toString()
+          : "", // Safely handle undefined
       });
 
       setDescription(data?.data.description || "");
@@ -275,7 +277,7 @@ const ModifierJob: React.FC<{ id: number }> = ({ id }) => {
               </FormGroup>
             </div>
             {isError && (
-              //@ts-ignore
+              //@ts-expect-error  Error data structure is not typed properly in the API response
               <ErrorMessage text={error?.data?.error_message} />
             )}
             <div className="flex justify-end">

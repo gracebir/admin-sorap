@@ -239,7 +239,7 @@ const CreateJobForm = () => {
               </FormGroup>
             </div>
             {isError && (
-              //@ts-ignore
+              //@ts-expect-error  Error data structure is not typed properly in the API response
               <ErrorMessage text={error?.data?.error_message} />
             )}
             <div className="flex justify-end">

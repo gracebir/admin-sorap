@@ -15,6 +15,7 @@ import {
 } from "@/lib/features/slice/blog/blogSlice";
 import { blogsOptions } from "@/utils/constasts";
 import { useFormik } from "formik";
+import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { MdOutlineFileDownload } from "react-icons/md";
 import { toast } from "react-toastify";
@@ -85,13 +86,15 @@ const EditBlog: React.FC<{ id: number }> = ({ id }) => {
 
   useEffect(() => {
     if (!loading && data?.data) {
+      if (data.data.thumbnail) {
+        setThumbnail(data.data.thumbnail);
+      }
+      setContent(data?.data.content || "");
       setValues({
         title: data?.data.title || "",
         content: data?.data.content || "",
-        categoryId: data?.data.categoryId.toString() || "",
+        categoryId: data?.data.categoryId?.toString() || "",
       });
-      setThumbnail(data?.data.thumbnail!);
-      setContent(data?.data.content! || "");
     }
   }, [data, loading, setValues]);
 
@@ -153,7 +156,7 @@ const EditBlog: React.FC<{ id: number }> = ({ id }) => {
               </FormGroup>
             </div>
             {isError && (
-              //@ts-ignore
+              //@ts-expect-error Error data structure is not typed properly in the API response
               <ErrorMessage text={error?.data?.error_message} />
             )}
             <div className="flex justify-end">
@@ -174,7 +177,9 @@ const EditBlog: React.FC<{ id: number }> = ({ id }) => {
                     onMouseEnter={() => setHovered(true)}
                     onMouseLeave={() => setHovered(false)}
                   >
-                    <img
+                    <Image
+                      width={400}
+                      height={400}
                       src={thumbnail}
                       alt="event-thumbnail"
                       className="w-full h-full object-contain rounded-md"

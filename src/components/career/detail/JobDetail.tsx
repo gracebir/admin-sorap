@@ -166,20 +166,32 @@ const JobDetail: React.FC<{ id: number }> = ({ id }) => {
                     Icon={CiCalendar}
                     label="job posted"
                     text={
-                      formatDateTimeToFrench(data?.data.postedAt!).split("-")[0]
+                      data?.data.postedAt
+                        ? formatDateTimeToFrench(data.data.postedAt).split(
+                            "-"
+                          )[0]
+                        : "N/A"
                     }
                   />
                   <JobOverView
                     Icon={ImAlarm}
                     label="Deadline du Job"
                     text={
-                      formatDateTimeToFrench(data?.data.deadline!).split("-")[0]
+                      data?.data.deadline
+                        ? formatDateTimeToFrench(data.data.deadline).split(
+                            "-"
+                          )[0]
+                        : "N/A"
                     }
                   />
                   <JobOverView
                     Icon={PiStack}
                     label="Job level"
-                    text={data?.data.experienceLevel.split("_").join(" ")!}
+                    text={
+                      data?.data.experienceLevel
+                        ? data.data.experienceLevel.split("_").join(" ")
+                        : "N/A"
+                    }
                   />
                 </div>
                 <hr />

@@ -91,9 +91,12 @@ const ListJobs = () => {
                     Showing{" "}
                     <span className="font-medium">{startIndex + 1}</span> to{" "}
                     <span className="font-medium">
-                      {Math.min(endIndex, data?.data?.length!)}
+                      {Math.min(endIndex, data?.data?.length || 0)}
                     </span>{" "}
-                    of <span className="font-medium">{data?.data?.length}</span>{" "}
+                    of{" "}
+                    <span className="font-medium">
+                      {data?.data?.length || 0}
+                    </span>{" "}
                     results
                   </p>
                 </div>
