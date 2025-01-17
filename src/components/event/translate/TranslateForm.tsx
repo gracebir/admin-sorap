@@ -43,6 +43,7 @@ const TranslateForm: React.FC<{ id: number }> = ({ id }) => {
             }, 2000);
           }
         } catch (error) {
+          console.log(error);
           toast.error("Il y a un erreur");
         } finally {
           resetForm();
@@ -59,7 +60,7 @@ const TranslateForm: React.FC<{ id: number }> = ({ id }) => {
   return (
     <div className="flex flex-col gap-6 ">
       <h1 className="text-xl md:text-2xl ">
-        Traduise l'evenement en Anglais:{" "}
+        Traduise l&lsquo;evenement en Anglais:{" "}
         <span className="font-bold text-lightBlue">{data?.data.theme}</span>
       </h1>
       <div className="flex flex-col gap-4">
@@ -73,7 +74,7 @@ const TranslateForm: React.FC<{ id: number }> = ({ id }) => {
         <div className="lg:col-span-3 md:col-span-3  order-2 md:order-2 lg:order-1 shadow-md flex flex-col border-gray-200 border rounded-md">
           <div className="px-6 py-2 border-b border-gray-300">
             <h3 className="text-sm lg:text-base font-semibold">
-              Infomation sur l'evenement
+              Infomation sur l&lsquo;evenement
             </h3>
           </div>
           <div className="px-6 py-5 flex flex-col gap-4">
@@ -101,12 +102,12 @@ const TranslateForm: React.FC<{ id: number }> = ({ id }) => {
                   name="description"
                   placeholder="e.g. Nous voulons offre un apercu sur..."
                   handleChange={handleChange}
-                  label="Decriver l'evenement"
+                  label="Decriver l&lsquo;evenement"
                 />
               </FormGroup>
             </div>
             {isError && (
-              //@ts-ignore
+              //@ts-expect-error error is due to data structure
               <ErrorMessage text={error?.data?.error_message} />
             )}
             <div className="flex justify-end">

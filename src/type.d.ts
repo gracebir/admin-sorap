@@ -3,57 +3,57 @@
 import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
 
 type AuthState = {
-    user: {
-        id: number;
-        firstname: string;
-        lastname: string;
-        avatar: string;
-        role: string;
-        isVerified: boolean;
-    } | null;
-
-    role: string | null;
+  user: {
+    id: number;
+    firstname: string;
+    lastname: string;
+    avatar: string;
+    role: string;
+    isVerified: boolean;
+  } | null;
+  token: string | null;
+  role: string | null;
 };
 
 type SigninType = {
-    email: string;
-    password: string;
+  email: string;
+  password: string;
 };
 
 type InputType = {
-    label: string;
-    placeholder: string;
-    error: string;
-    touched: boolean;
-    name: string;
-    value: string | number;
-    type: React.HTMLInputTypeAttribute;
-    handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    handleBlur: (e: React.FocusEvent<HTMLInputElement, Element>) => void;
+  label: string;
+  placeholder: string;
+  error: string;
+  touched: boolean;
+  name: string;
+  value: string | number;
+  type: React.HTMLInputTypeAttribute;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleBlur: (e: React.FocusEvent<HTMLInputElement, Element>) => void;
 };
 
 type TextAreaType = {
-    label: string;
-    placeholder: string;
-    error: string;
-    touched: boolean;
-    name: string;
-    value: string | number;
-    handleChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-    handleBlur: (e: React.FocusEvent<HTMLTextAreaElement, Element>) => void;
+  label: string;
+  placeholder: string;
+  error: string;
+  touched: boolean;
+  name: string;
+  value: string | number;
+  handleChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  handleBlur: (e: React.FocusEvent<HTMLTextAreaElement, Element>) => void;
 };
 
 type PasswordInputType = {
-    label: string;
-    placeholder: string;
-    error: string;
-    touched: boolean;
-    name: string;
-    value: string | number;
-    handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    handleBlur: (e: React.FocusEvent<HTMLInputElement, Element>) => void;
+  label: string;
+  placeholder: string;
+  error: string;
+  touched: boolean;
+  name: string;
+  value: string | number;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleBlur: (e: React.FocusEvent<HTMLInputElement, Element>) => void;
 };
 
 type Parameter = {
-    params: Params;
+  params: Params;
 };

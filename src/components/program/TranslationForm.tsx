@@ -41,6 +41,7 @@ const TranslateFormProgram: React.FC<{ id: number }> = ({ id }) => {
             }, 2000);
           }
         } catch (error) {
+          console.log(error);
           toast.error("Un erreur se produit");
         } finally {
           resetForm();
@@ -104,7 +105,7 @@ const TranslateFormProgram: React.FC<{ id: number }> = ({ id }) => {
               </FormGroup>
             </div>
             {isError && (
-              //@ts-ignore
+              //@ts-expect-error due to data structure
               <ErrorMessage text={error?.data?.error_message} />
             )}
             <div className="flex justify-end">

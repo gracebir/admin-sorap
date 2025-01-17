@@ -17,34 +17,35 @@ const ListBlog = () => {
         <span className="loading loading-spinner loading-lg"></span>
       </div>
     );
+
+  if (!blogs?.data || blogs.data.length === 0) {
+    return (
+      <div className="h-[70svh] flex items-center justify-center">
+        <div className="flex items-center flex-col gap-2">
+          <h1 className="font-bold">Oops, Aucun Partenaire Enregistrer</h1>
+          <ImWarning size={80} />
+          <Link
+            className="bg-primary text-white text-sm px-6 py-2 font-semibold duration-300 rounded-3xl hover:bg-blue-800"
+            href={"/admin/blogs/create"}
+          >
+            Ajouter un blog
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div>
-      {blogs?.data?.length !== 0 ? (
-        <>
-          <div className="flex justify-between items-center mb-2">
-            <Link
-              className="bg-primary text-white text-sm px-6 py-2 font-semibold duration-300 rounded-3xl hover:bg-blue-800"
-              href={"/admin/blogs/create"}
-            >
-              Ajouter un Blog
-            </Link>
-          </div>
-          <BlogTableData blogs={blogs?.data!} />
-        </>
-      ) : (
-        <div className="h-[70svh] flex items-center justify-center">
-          <div className="flex items-center flex-col gap-2">
-            <h1 className="font-bold">Oops, Aucun Partenaire Enregistrer</h1>
-            <ImWarning size={80} />
-            <Link
-              className="bg-primary text-white text-sm px-6 py-2 font-semibold duration-300 rounded-3xl hover:bg-blue-800"
-              href={"/admin/blogs/create"}
-            >
-              Ajouter un blog
-            </Link>
-          </div>
-        </div>
-      )}
+      <div className="flex justify-between items-center mb-2">
+        <Link
+          className="bg-primary text-white text-sm px-6 py-2 font-semibold duration-300 rounded-3xl hover:bg-blue-800"
+          href={"/admin/blogs/create"}
+        >
+          Ajouter un Blog
+        </Link>
+      </div>
+      <BlogTableData blogs={blogs.data} />
     </div>
   );
 };

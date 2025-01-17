@@ -62,7 +62,7 @@ export type TProgramTranslation = {
 };
 
 export type TsponsorState = {
-  sponsor: any;
+  sponsor: null;
 };
 
 export type TtutorInput = {

@@ -76,14 +76,28 @@ export const createPartnerFormData = (input: TcreatePartnerType): FormData => {
 export const createModeratorFormData = (input: TModerator): FormData => {
   const formData = new FormData();
 
-  // Append each field from TCreateEventInput to the FormData
-  formData.append("firstname", input.firstname);
-  formData.append("lastname", input.lastname);
-  formData.append("bio", input.bio); // Convert Date to string
-  formData.append("eventId", input.eventId?.toString()!); // Convert Date to string
-  formData.append("avatar", input.avatar!);
-  formData.append("phone", input.phone); // Convert number to string
-  formData.append("email", input.email); // Blob (File)
+  // Append only if the property is defined
+  if (input.firstname) {
+    formData.append("firstname", input.firstname);
+  }
+  if (input.lastname) {
+    formData.append("lastname", input.lastname);
+  }
+  if (input.bio) {
+    formData.append("bio", input.bio);
+  }
+  if (input.eventId !== undefined && input.eventId !== null) {
+    formData.append("eventId", input.eventId.toString());
+  }
+  if (input.avatar) {
+    formData.append("avatar", input.avatar);
+  }
+  if (input.phone) {
+    formData.append("phone", input.phone);
+  }
+  if (input.email) {
+    formData.append("email", input.email);
+  }
 
   return formData;
 };

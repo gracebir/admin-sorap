@@ -35,18 +35,22 @@ const EditProgramLangForm: React.FC<{ id: number }> = ({ id }) => {
       description: "",
     },
     onSubmit: async (value) => {
+      if (!data?.data?.programId) {
+        toast.error("Program ID is missing");
+        return;
+      }
       try {
         const response = await updateTranslation({
           id,
           translation: {
             ...value,
-            programId: data?.data.programId!,
+            programId: data.data.programId,
           },
         }).unwrap();
         if (response.status === "success") {
           toast.success(response.message);
         }
-      } catch (error) {
+      } catch {
         toast.error("Un erreur se produit");
       }
     },
@@ -89,7 +93,7 @@ const EditProgramLangForm: React.FC<{ id: number }> = ({ id }) => {
         <div className="lg:col-span-3 md:col-span-3  order-2 md:order-2 lg:order-1 shadow-md flex flex-col border-gray-200 border rounded-md">
           <div className="px-6 py-2 border-b border-gray-300">
             <h3 className="text-sm lg:text-base font-semibold">
-              Infomation sur l'evenement
+              Infomation sur l&apos;evenement
             </h3>
           </div>
           <div className="px-6 py-5 flex flex-col gap-4">
@@ -122,8 +126,12 @@ const EditProgramLangForm: React.FC<{ id: number }> = ({ id }) => {
               </FormGroup>
             </div>
             {isError && (
-              //@ts-ignore
-              <ErrorMessage text={error?.data?.error_message} />
+              <ErrorMessage
+                text={
+                  //@ts-expect-error this error is due to data structure
+                  error?.data?.error_message || "An unexpected error occurred."
+                }
+              />
             )}
             <div className="flex justify-end">
               <Button type="submit" text="Modifier" isLoading={isLoading} />
