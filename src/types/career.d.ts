@@ -29,7 +29,17 @@ export type TCareer = {
     id: number;
     name: string;
   };
-  JobTranslation: Array<any>;
+  JobTranslation: Array<{
+    id;
+    title: string;
+    description: string;
+    requirements: string;
+    responsibilities: string;
+    desirable: string;
+    benefits: string;
+    salaryRange: string;
+    location: string;
+  }>;
 };
 
 export type TcreateJob = {
